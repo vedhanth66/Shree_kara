@@ -1,0 +1,225 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: black;
+}
+
+.logo_container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: black;
+}
+
+.logo_wrapper {
+  width: 90%;
+  max-width: 750px;
+  aspect-ratio: 942 / 768;
+  position: relative;
+  margin: auto;
+  transform: translateX(-4%);
+}
+
+.logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.logo div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+#Shree {
+  top: 0;
+  left: 0;
+  width: 90%;
+  height: 95%;
+  position: absolute;
+  animation: fadeInScaleBounce 3.2s ease-out 0.4s forwards;
+}
+
+#Eye {
+  top: 27.5%;
+  left: 32%;
+  width: 13%;
+  animation: slideFromTopBounce 3.5s ease-out 0.7s forwards;
+}
+
+#Dhantha {
+  top: 65%;
+  left: 46%;
+  width: 7%;
+  animation: slideFromBottomBounce 3.5s ease-out 1s forwards;
+}
+
+#Kaara {
+  top: 52%;
+  left: 52%;
+  width: 55%;
+  z-index: 1;
+  animation: slideFromLeftBounce 3.8s ease-out 1.3s forwards;
+}
+
+#kalaagraha {
+  top: 83%;
+  left: 61%;
+  width: 45%;
+  z-index: 2;
+  animation: slideFromRightBounce 3.8s ease-out 1.6s forwards;
+}
+
+.logo img {
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  cursor: pointer;
+}
+
+#Shree img,
+#Eye img,
+#Dhantha img,
+#kalaagraha img {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+#Shree:hover img {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px #ffffffaa);
+}
+
+#kalaagraha:hover img {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 10px #ffffffaa);
+}
+
+#Eye:hover img {
+  transform: scale(1.4);
+  filter: drop-shadow(0 0 10px #ffffffaa);
+}
+
+#Dhantha:hover img {
+  transform: scale(1.4);
+  filter: drop-shadow(0 0 10px #ffffffaa);
+}
+
+@keyframes fadeInScaleBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+  75% {
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideFromTopBounce {
+  0% {
+    opacity: 0;
+    transform: translateY(-120px) scale(0.95);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(15px) scale(1.03);
+  }
+  75% {
+    transform: translateY(-5px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideFromBottomBounce {
+  0% {
+    opacity: 0;
+    transform: translateY(120px) scale(0.95);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-15px) scale(1.03);
+  }
+  75% {
+    transform: translateY(5px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideFromLeftBounce {
+  0% {
+    opacity: 0;
+    transform: translateX(-120px) scale(0.95);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(15px) scale(1.03);
+  }
+  75% {
+    transform: translateX(-5px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes slideFromRightBounce {
+  0% {
+    opacity: 0;
+    transform: translateX(120px) scale(0.95);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(-15px) scale(1.03);
+  }
+  75% {
+    transform: translateX(5px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.transition-image {
+  position: fixed;
+  z-index: 9999;
+  transition: all 0.8s ease-in-out;
+  pointer-events: none;
+  will-change: top, left, width, height;
+}
+
+.transition-overlay {
+  will-change: backdrop-filter, opacity;
+}
+
+.transition-image {
+  will-change: transform, opacity;
+}
