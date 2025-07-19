@@ -1,7 +1,13 @@
-body{
-    background-color: black;
+body {
+  background: linear-gradient(100deg,#fff56ee6 10%, #815c06e9 135%);
+  min-height: 100vh;
+  margin: 0;
+  font-family: sans-serif;
 }
-h1{
-    font-size: 5rem;
-    color: white;
-}
+
+/* h1 {
+  font-size: 5rem;
+  color: #333;
+  text-align: center;
+  padding-top: 2rem;
+} */

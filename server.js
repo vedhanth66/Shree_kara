@@ -11,7 +11,7 @@ app.use('/Shree', express.static(path.join(__dirname, 'Shree')));
 
 app.use('/Dhantha', express.static(path.join(__dirname, 'Dhantha')));
 
-app.use('/Kalaagraha', express.static(path.join(__dirname, 'Kalaagraha')));
+app.use('/Kalaagruha', express.static(path.join(__dirname, 'Kalaagruha')));
 
 app.use(express.static(__dirname));
 
@@ -31,8 +31,8 @@ app.get("/Dhantha", (req, res) => {
   res.sendFile(path.join(__dirname, "Dhantha", "Dhantha.html"));
 });
 
-app.get("/Kalaagraha", (req, res) => {
-  res.sendFile(path.join(__dirname, "Kalaagraha", "Kalaagraha.html"));
+app.get("/Kalaagruha", (req, res) => {
+  res.sendFile(path.join(__dirname, "Kalaagruha", "Kalaagruha.html"));
 });
 
 app.listen(port, () => {
