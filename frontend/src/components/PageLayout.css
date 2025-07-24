@@ -1,0 +1,221 @@
+.page-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  color: white;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 216, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-button {
+  background: linear-gradient(45deg, #FFD800, #FFA500);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 216, 0, 0.4);
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #FFD800, #FFA500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  text-align: center;
+  flex: 1;
+}
+
+.page-content {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.content-section {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 20px;
+  padding: 40px;
+  border: 1px solid rgba(255, 216, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.content-section h2 {
+  font-size: 2rem;
+  color: #FFD800;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.content-section p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #e0e0e0;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Feature Grid Styles */
+.feature-grid, .about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.feature-card, .about-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+  border: 1px solid rgba(255, 216, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover, .about-card:hover {
+  transform: translateY(-5px);
+  border-color: #FFD800;
+  box-shadow: 0 10px 30px rgba(255, 216, 0, 0.2);
+}
+
+.feature-card i, .about-card i {
+  font-size: 3rem;
+  color: #FFD800;
+  margin-bottom: 20px;
+}
+
+.feature-card h3, .about-card h3 {
+  font-size: 1.5rem;
+  color: #FFD800;
+  margin-bottom: 15px;
+}
+
+.feature-card p, .about-card p {
+  color: #e0e0e0;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Services Grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.service-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 30px;
+  border: 1px solid rgba(255, 216, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  border-color: #FFD800;
+  box-shadow: 0 10px 30px rgba(255, 216, 0, 0.2);
+}
+
+.service-card i {
+  font-size: 3rem;
+  color: #FFD800;
+  margin-bottom: 20px;
+}
+
+.service-card h3 {
+  font-size: 1.5rem;
+  color: #FFD800;
+  margin-bottom: 15px;
+}
+
+.service-card p {
+  color: #e0e0e0;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.service-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.service-card ul li {
+  color: #c0c0c0;
+  padding: 5px 0;
+  position: relative;
+  padding-left: 20px;
+}
+
+.service-card ul li:before {
+  content: "•";
+  color: #FFD800;
+  position: absolute;
+  left: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .page-content {
+    padding: 20px;
+  }
+
+  .content-section {
+    padding: 30px 20px;
+  }
+
+  .feature-grid, .about-grid, .services-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .back-button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .content-section {
+    padding: 20px 15px;
+  }
+}
