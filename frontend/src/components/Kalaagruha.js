@@ -55,12 +55,12 @@ const Kalaagruha = () => {
         <div className="auth-section">
           {user ? (
             <div className="user-menu">
-              <span className="welcome-text">Welcome, {user.username}</span>
+              <span className="welcome-text">Welcome, Author {user.username}</span>
               <button 
                 className="upload-btn"
                 onClick={() => setShowUpload(!showUpload)}
               >
-                <i className="fas fa-plus"></i> Upload
+                <i className="fas fa-plus"></i> Upload Content
               </button>
               <button className="logout-btn" onClick={handleLogout}>
                 <i className="fas fa-sign-out-alt"></i> Logout
@@ -71,7 +71,7 @@ const Kalaagruha = () => {
               className="login-btn"
               onClick={() => setShowLogin(true)}
             >
-              <i className="fas fa-sign-in-alt"></i> Login to Upload
+              <i className="fas fa-user-edit"></i> Author Login
             </button>
           )}
         </div>
