@@ -305,23 +305,6 @@
   animation-direction: reverse;
 }
 
-/* Enhanced Logo Wrapper */
-.logo_wrapper {
-  width: 90%;
-  max-width: 375px;
-  aspect-ratio: 942 / 768;
-  position: relative;
-  margin: auto;
-  transform: translateX(-4%);
-  filter: drop-shadow(0 0 30px rgba(255, 216, 0, 0.2));
-  animation: logoGlow 6s infinite alternate;
-}
-
-@keyframes logoGlow {
-  0% { filter: drop-shadow(0 0 30px rgba(255, 216, 0, 0.2)); }
-  100% { filter: drop-shadow(0 0 50px rgba(255, 216, 0, 0.4)); }
-}
-
 .transition-image {
   position: fixed;
   z-index: 9999;
