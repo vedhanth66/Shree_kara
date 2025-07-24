@@ -1,0 +1,328 @@
+.gallery-container {
+  margin-top: 40px;
+}
+
+.gallery-tabs {
+  display: flex;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 216, 0, 0.3);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.gallery-tabs button {
+  flex: 1;
+  padding: 15px 20px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.gallery-tabs button.active {
+  background: linear-gradient(45deg, #FFD800, #FFA500);
+  color: black;
+  font-weight: 600;
+}
+
+.gallery-tabs button:not(.active):hover {
+  background: rgba(255, 216, 0, 0.1);
+}
+
+.gallery-loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: #e0e0e0;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 216, 0, 0.3);
+  border-top: 3px solid #FFD800;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #888;
+}
+
+.empty-state i {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  color: #FFD800;
+}
+
+.empty-state p {
+  font-size: 1.2rem;
+}
+
+/* Images Grid */
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.image-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 216, 0, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.image-card:hover {
+  transform: translateY(-5px);
+  border-color: #FFD800;
+  box-shadow: 0 10px 30px rgba(255, 216, 0, 0.2);
+}
+
+.image-wrapper {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.image-card:hover .image-wrapper img {
+  transform: scale(1.05);
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  padding: 30px 20px 20px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.image-card:hover .image-overlay {
+  transform: translateY(0);
+}
+
+.image-overlay h3 {
+  color: #FFD800;
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+}
+
+.image-overlay p {
+  color: #e0e0e0;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.card-info {
+  padding: 20px;
+}
+
+.card-info h4 {
+  color: #FFD800;
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+}
+
+.upload-info {
+  color: #888;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* Poems Grid */
+.poems-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 25px;
+}
+
+.poem-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 30px;
+  border: 1px solid rgba(255, 216, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.poem-card:hover {
+  transform: translateY(-5px);
+  border-color: #FFD800;
+  box-shadow: 0 10px 30px rgba(255, 216, 0, 0.2);
+}
+
+.poem-card h3 {
+  color: #FFD800;
+  font-size: 1.5rem;
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+.poem-author {
+  color: #FFA500;
+  font-style: italic;
+  text-align: center;
+  margin: 0 0 25px 0;
+  font-size: 1.1rem;
+}
+
+.poem-content {
+  color: #e0e0e0;
+  line-height: 1.8;
+  margin: 0 0 25px 0;
+  text-align: center;
+  font-size: 1.05rem;
+}
+
+.poem-content p {
+  margin: 0 0 15px 0;
+}
+
+.poem-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Image Modal */
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(10px);
+  padding: 20px;
+}
+
+.modal-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  position: relative;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 216, 0, 0.3);
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: #FFD800;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.close-modal-btn:hover {
+  background: rgba(255, 216, 0, 0.2);
+  transform: rotate(90deg);
+}
+
+.modal-content img {
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+}
+
+.modal-info {
+  padding: 20px;
+  text-align: center;
+}
+
+.modal-info h3 {
+  color: #FFD800;
+  font-size: 1.5rem;
+  margin: 0 0 10px 0;
+}
+
+.modal-info p {
+  color: #e0e0e0;
+  margin: 0 0 15px 0;
+  line-height: 1.6;
+}
+
+.modal-info .upload-info {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .images-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .poems-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .gallery-tabs {
+    flex-direction: column;
+  }
+  
+  .image-wrapper {
+    height: 200px;
+  }
+  
+  .poem-card {
+    padding: 25px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .images-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .image-wrapper {
+    height: 180px;
+  }
+  
+  .modal-content {
+    margin: 10px;
+  }
+  
+  .poem-card {
+    padding: 20px 15px;
+  }
+}

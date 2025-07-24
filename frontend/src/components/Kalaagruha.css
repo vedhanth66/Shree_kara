@@ -1,0 +1,96 @@
+.kalaagruha-container {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+}
+
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.welcome-text {
+  color: #FFD800;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.login-btn,
+.upload-btn,
+.logout-btn {
+  background: linear-gradient(45deg, #FFD800, #FFA500);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.login-btn:hover,
+.upload-btn:hover,
+.logout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 216, 0, 0.4);
+}
+
+.logout-btn {
+  background: linear-gradient(45deg, #ff4757, #ff3838);
+}
+
+.logout-btn:hover {
+  box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+  }
+  
+  .auth-section {
+    justify-content: center;
+  }
+  
+  .user-menu {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .welcome-text {
+    text-align: center;
+  }
+  
+  .login-btn,
+  .upload-btn,
+  .logout-btn {
+    width: 100%;
+    justify-content: center;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-menu {
+    width: 100%;
+  }
+  
+  .login-btn,
+  .upload-btn,
+  .logout-btn {
+    max-width: none;
+    padding: 12px 20px;
+  }
+}
