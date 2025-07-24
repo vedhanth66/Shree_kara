@@ -115,19 +115,34 @@
   color: #e0e0e0;
 }
 
-.toggle-btn {
-  background: none;
-  border: none;
-  color: #FFD800;
-  cursor: pointer;
-  font-weight: 600;
-  margin-left: 5px;
-  text-decoration: underline;
-  transition: color 0.3s ease;
+.demo-credentials {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 216, 0, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 216, 0, 0.3);
+  text-align: center;
 }
 
-.toggle-btn:hover {
-  color: #FFA500;
+.demo-credentials p {
+  margin: 5px 0;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+}
+
+.demo-credentials code {
+  background: rgba(255, 216, 0, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #FFD800;
+  font-weight: 600;
+}
+
+.login-subtitle {
+  text-align: center;
+  color: #c0c0c0;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
 }
 
 @media (max-width: 480px) {
