@@ -104,27 +104,12 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 async def root():
     return {"message": "Shree Kara Studios API"}
 
-# Authentication routes
-@app.post("/api/auth/register", response_model=dict)
-async def register(user: UserCreate):
-    # Check if user exists
-    if db.users.find_one({"username": user.username}):
-        raise HTTPException(status_code=400, detail="Username already registered")
-    
-    if db.users.find_one({"email": user.email}):
-        raise HTTPException(status_code=400, detail="Email already registered")
-    
-    # Create user
-    hashed_password = get_password_hash(user.password)
-    user_doc = {
-        "username": user.username,
-        "email": user.email,
-        "hashed_password": hashed_password,
-        "created_at": datetime.utcnow()
-    }
-    
-    result = db.users.insert_one(user_doc)
-    return {"message": "User created successfully", "user_id": str(result.inserted_id)}
+# Pre-defined authors (you can modify these)
+AUTHORS = {
+    "admin": get_password_hash("shree123"),
+    "author1": get_password_hash("kara456"),
+    "editor": get_password_hash("studios789")
+}
 
 @app.post("/api/auth/token", response_model=Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
