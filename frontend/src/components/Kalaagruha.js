@@ -95,7 +95,8 @@ const Kalaagruha = () => {
           <h2>Creative Gallery</h2>
           <p>
             Welcome to our creative gallery where we showcase beautiful images and 
-            meaningful poems. This is our space for artistic expression and cultural sharing.
+            meaningful poems. Authors can login to upload and share their creative works 
+            with the world.
           </p>
           
           <Gallery />
