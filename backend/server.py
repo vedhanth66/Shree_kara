@@ -173,8 +173,7 @@ async def get_poems():
 async def get_profile(current_user: dict = Depends(get_current_user)):
     return {
         "username": current_user["username"],
-        "email": current_user["email"],
-        "created_at": current_user["created_at"]
+        "role": "author"
     }
 
 if __name__ == "__main__":
