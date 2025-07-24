@@ -117,11 +117,14 @@
 #Shree, #Eye, #Dhantha, #Kalaagruha {
   pointer-events: auto;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 
 #Shree:hover, #Eye:hover, #Dhantha:hover, #Kalaagruha:hover {
-  transform: scale(1.05);
+  transform: scale(1.05) rotateY(10deg) rotateX(5deg);
+  filter: drop-shadow(0 10px 30px rgba(255, 216, 0, 0.5)) brightness(1.2);
 }
 
 #Shree {
