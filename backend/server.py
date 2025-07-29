@@ -222,14 +222,23 @@ async def get_profile(current_user: dict = Depends(get_current_user)):
 @app.get("/{full_path:path}")
 async def serve_frontend(request: Request, full_path: str):
     # If the request is for an API route, return 404
-    if full_path.startswith("api/"):
-        raise HTTPException(status_code=404, detail="API route not found")
+    if full_path.startswith("api/") or full_path.startswith("docs") or full_path.startswith("openapi.json"):
+        raise HTTPException(status_code=404, detail="Route not found")
     
-    # For all other routes, serve the React app
+    # For static files, try to serve them from the build directory
     if os.path.exists(build_path):
-        return FileResponse(os.path.join(build_path, "index.html"))
-    else:
-        raise HTTPException(status_code=404, detail="Frontend build not found")
+        # Check if it's a static file request
+        if full_path.startswith("static/") or full_path.endswith(('.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.ico', '.svg', '.woff', '.woff2')):
+            static_file_path = os.path.join(build_path, full_path)
+            if os.path.exists(static_file_path):
+                return FileResponse(static_file_path)
+        
+        # For all other routes, serve the React app
+        index_path = os.path.join(build_path, "index.html")
+        if os.path.exists(index_path):
+            return FileResponse(index_path)
+    
+    raise HTTPException(status_code=404, detail="Frontend not found")
 
 if __name__ == "__main__":
     import uvicorn
