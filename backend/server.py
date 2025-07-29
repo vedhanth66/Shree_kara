@@ -74,10 +74,10 @@ class ImageUpload(BaseModel):
     description: Optional[str] = None
     image_data: str  # base64 encoded image
 
-class PoemUpload(BaseModel):
+class VideoUpload(BaseModel):
     title: str
-    content: str
-    author: str
+    description: Optional[str] = None
+    video_data: str  # base64 encoded video
 
 # Utility functions
 def verify_password(plain_password, hashed_password):
@@ -155,18 +155,18 @@ async def upload_image(image: ImageUpload, current_user: dict = Depends(get_curr
     result = db.images.insert_one(image_doc)
     return {"message": "Image uploaded successfully", "image_id": str(result.inserted_id)}
 
-@app.post("/api/upload/poem")
-async def upload_poem(poem: PoemUpload, current_user: dict = Depends(get_current_user)):
-    poem_doc = {
-        "title": poem.title,
-        "content": poem.content,
-        "author": poem.author,
+@app.post("/api/upload/video")
+async def upload_video(video: VideoUpload, current_user: dict = Depends(get_current_user)):
+    video_doc = {
+        "title": video.title,
+        "description": video.description,
+        "video_data": video.video_data,
         "uploaded_by": current_user["username"],
         "uploaded_at": datetime.utcnow()
     }
     
-    result = db.poems.insert_one(poem_doc)
-    return {"message": "Poem uploaded successfully", "poem_id": str(result.inserted_id)}
+    result = db.videos.insert_one(video_doc)
+    return {"message": "Video uploaded successfully", "video_id": str(result.inserted_id)}
 
 # Get routes
 @app.get("/api/images")
