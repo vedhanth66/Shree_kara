@@ -173,6 +173,19 @@ async def upload_video(video: VideoUpload, current_user: dict = Depends(get_curr
     result = db.videos.insert_one(video_doc)
     return {"message": "Video uploaded successfully", "video_id": str(result.inserted_id)}
 
+@app.post("/api/upload/poem")
+async def upload_poem(poem: PoemUpload, current_user: dict = Depends(get_current_user)):
+    poem_doc = {
+        "title": poem.title,
+        "content": poem.content,
+        "author": poem.author,
+        "uploaded_by": current_user["username"],
+        "uploaded_at": datetime.utcnow()
+    }
+    
+    result = db.poems.insert_one(poem_doc)
+    return {"message": "Poem uploaded successfully", "poem_id": str(result.inserted_id)}
+
 # Get routes
 @app.get("/api/images")
 async def get_images():
