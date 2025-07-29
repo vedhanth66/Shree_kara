@@ -79,6 +79,11 @@ class VideoUpload(BaseModel):
     description: Optional[str] = None
     video_data: str  # base64 encoded video
 
+class PoemUpload(BaseModel):
+    title: str
+    content: str
+    author: str
+
 # Utility functions
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
