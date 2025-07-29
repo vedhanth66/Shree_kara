@@ -40,6 +40,21 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token")
 
+# Build frontend if build directory doesn't exist
+frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../frontend"))
+build_path = os.path.join(frontend_path, "build")
+
+# Create uploads directory for assets
+uploads_dir = os.path.join(os.path.dirname(__file__), "uploads")
+os.makedirs(uploads_dir, exist_ok=True)
+
+# Serve static assets from the app root (images, videos, etc.)
+app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "..")), name="static")
+
+# Serve React build files
+if os.path.exists(build_path):
+    app.mount("/static-files", StaticFiles(directory=build_path, html=True), name="static-files")
+
 # Pydantic models
 class UserCreate(BaseModel):
     username: str
