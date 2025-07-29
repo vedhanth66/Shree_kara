@@ -218,6 +218,19 @@ async def get_profile(current_user: dict = Depends(get_current_user)):
         "role": "author"
     }
 
+# Serve React app for all other routes (SPA fallback)
+@app.get("/{full_path:path}")
+async def serve_frontend(request: Request, full_path: str):
+    # If the request is for an API route, return 404
+    if full_path.startswith("api/"):
+        raise HTTPException(status_code=404, detail="API route not found")
+    
+    # For all other routes, serve the React app
+    if os.path.exists(build_path):
+        return FileResponse(os.path.join(build_path, "index.html"))
+    else:
+        raise HTTPException(status_code=404, detail="Frontend build not found")
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)
