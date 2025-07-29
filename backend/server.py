@@ -203,6 +203,14 @@ async def get_videos():
         videos.append(video)
     return videos
 
+@app.get("/api/poems")
+async def get_poems():
+    poems = []
+    for poem in db.poems.find().sort("uploaded_at", -1):
+        poem["_id"] = str(poem["_id"])
+        poems.append(poem)
+    return poems
+
 @app.get("/api/user/profile")
 async def get_profile(current_user: dict = Depends(get_current_user)):
     return {
