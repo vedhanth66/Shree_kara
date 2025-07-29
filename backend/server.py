@@ -177,13 +177,13 @@ async def get_images():
         images.append(image)
     return images
 
-@app.get("/api/poems")
-async def get_poems():
-    poems = []
-    for poem in db.poems.find().sort("uploaded_at", -1):
-        poem["_id"] = str(poem["_id"])
-        poems.append(poem)
-    return poems
+@app.get("/api/videos")
+async def get_videos():
+    videos = []
+    for video in db.videos.find().sort("uploaded_at", -1):
+        video["_id"] = str(video["_id"])
+        videos.append(video)
+    return videos
 
 @app.get("/api/user/profile")
 async def get_profile(current_user: dict = Depends(get_current_user)):
