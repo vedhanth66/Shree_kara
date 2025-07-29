@@ -117,9 +117,9 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     
     return {"username": username}
 
-# Routes
-@app.get("/")
-async def root():
+# API Routes
+@app.get("/api")
+async def api_root():
     return {"message": "Shree Kara Studios API"}
 
 # Pre-defined authors (you can modify these)
