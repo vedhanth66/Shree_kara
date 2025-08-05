@@ -32,6 +32,9 @@ const Kalaagruha = () => {
   const fetchContent = async () => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      localStorage.removeItem('token');
+      setIsLoggedIn(false);
+      setLoginData({ username: "", password: "" });
       const [poemsRes, imagesRes, videosRes] = await Promise.all([
         axios.get(`${backendUrl}/api/poems`),
         axios.get(`${backendUrl}/api/images`),
@@ -49,6 +52,9 @@ const Kalaagruha = () => {
   const handleLogin = async () => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      localStorage.removeItem('token');
+      setIsLoggedIn(false);
+      setLoginData({ username: "", password: "" });
       const formData = new FormData();
       formData.append('username', loginData.username);
       formData.append('password', loginData.password);
@@ -90,6 +96,9 @@ const Kalaagruha = () => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
       const token = localStorage.getItem('token');
+      localStorage.removeItem('token');
+      setIsLoggedIn(false);
+      setLoginData({ username: "", password: "" });
       
       let uploadPayload = {};
       let endpoint = '';
@@ -144,7 +153,45 @@ const Kalaagruha = () => {
 
   const goBack = () => {
     navigate('/');
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    setLoginData({ username: "", password: "" });
   };
+
+  const deleteContent = async (type, id) => {
+  if (!window.confirm('Are you sure you want to delete this item?')) return;
+  
+  try {
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+    const token = localStorage.getItem('token');
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    setLoginData({ username: "", password: "" });
+
+    if (!token) {
+      alert('You are not logged in. Please log in to delete content.');
+      return;
+    }
+
+    let endpoint = '';
+
+    if (type === 'poem') endpoint = `/api/delete/poems/${id}`;
+    else if (type === 'image') endpoint = `/api/delete/images/${id}`;
+    else if (type === 'video') endpoint = `/api/delete/videos/${id}`;
+
+    await axios.delete(`${backendUrl}${endpoint}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    alert('Deleted successfully!');
+    fetchContent();  
+  } catch (error) {
+    alert('Deletion failed: ' + (error.response?.data?.detail || 'Unknown error'));
+  }
+};
+
 
   return (
     <div style={{
@@ -320,6 +367,24 @@ const Kalaagruha = () => {
                     <h3 style={{ color: '#333' }}>{poem.title}</h3>
                     <div style={{ whiteSpace: 'pre-wrap', margin: '1rem 0' }}>{poem.content}</div>
                     <p style={{ fontSize: '0.9rem', color: '#666' }}>by {poem.author}</p>
+
+                    {isLoggedIn && (
+                      <button
+                        onClick={() => deleteContent('poem', poem._id)}
+                        style={{
+                          marginTop: '10px',
+                          background: '#dc3545',
+                          color: 'white',
+                          border: 'none',
+                          padding: '8px 15px',
+                          borderRadius: '5px',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Delete Poem
+                      </button>
+                    )}
+
                   </div>
                 ))}
               </div>
@@ -342,6 +407,24 @@ const Kalaagruha = () => {
                   }}>
                     <h3 style={{ color: '#333' }}>{image.title}</h3>
                     <img src={`data:image/jpeg;base64,${image.image_data}`} alt={image.title} style={{ width: '100%', borderRadius: '8px' }} />
+
+                      {isLoggedIn && (
+                          <button
+                            onClick={() => deleteContent('image', image._id)}
+                            style={{
+                              marginTop: '10px',
+                              background: '#dc3545',
+                              color: 'white',
+                              border: 'none',
+                              padding: '8px 15px',
+                              borderRadius: '5px',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            Delete Image
+                          </button>
+                        )}
+
                   </div>
                 ))}
               </div>
@@ -364,6 +447,24 @@ const Kalaagruha = () => {
                   }}>
                     <h3 style={{ color: '#333' }}>{video.title}</h3>
                     <video controls style={{ width: '100%', borderRadius: '8px' }} src={`data:video/mp4;base64,${video.video_data}`} />
+
+                      {isLoggedIn && (
+                          <button
+                            onClick={() => deleteContent('video', video._id)}
+                            style={{
+                              marginTop: '10px',
+                              background: '#dc3545',
+                              color: 'white',
+                              border: 'none',
+                              padding: '8px 15px',
+                              borderRadius: '5px',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            Delete Video
+                          </button>
+                        )}
+
                   </div>
                 ))}
               </div>
@@ -384,63 +485,65 @@ const Kalaagruha = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          zIndex: 2000
+          zIndex: 2000,
         }}>
           <div style={{
             background: 'white',
             padding: '2rem',
-            borderRadius: '15px',
-            width: '300px'
+            borderRadius: '10px',
+            width: '320px',
+            boxShadow: '0 8px 16px rgba(0,0,0,0.25)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem'
           }}>
-            <h3 style={{ textAlign: 'center', marginBottom: '1rem' }}>Author Login</h3>
+            <h2 style={{ margin: 0, textAlign: 'center' }}>Author Login</h2>
+            
             <input
               type="text"
               placeholder="Username"
               value={loginData.username}
-              onChange={(e) => setLoginData({...loginData, username: e.target.value})}
-              style={{ width: '100%', padding: '10px', margin: '5px 0', borderRadius: '5px', border: '1px solid #ccc' }}
+              onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
+              style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
             />
+            
             <input
               type="password"
               placeholder="Password"
               value={loginData.password}
-              onChange={(e) => setLoginData({...loginData, password: e.target.value})}
-              style={{ width: '100%', padding: '10px', margin: '5px 0', borderRadius: '5px', border: '1px solid #ccc' }}
+              onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+              style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
             />
-            <div style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}>
-              <button
-                onClick={handleLogin}
-                style={{
-                  flex: 1,
-                  background: '#28a745',
-                  color: 'white',
-                  border: 'none',
-                  padding: '10px',
-                  borderRadius: '5px',
-                  cursor: 'pointer'
-                }}
-              >
-                Login
-              </button>
-              <button
-                onClick={() => {
-                    setShowLogin(false);
-                    setLoginData({username: "", password: ""});
-                  }
-                }
-                style={{
-                  flex: 1,
-                  background: '#dc3545',
-                  color: 'white',
-                  border: 'none',
-                  padding: '10px',
-                  borderRadius: '5px',
-                  cursor: 'pointer'
-                }}
-              >
-                Cancel
-              </button>
-            </div>
+            
+            <button
+              onClick={handleLogin}
+              style={{
+                background: '#007bff',
+                color: 'white',
+                border: 'none',
+                padding: '12px',
+                borderRadius: '25px',
+                cursor: 'pointer',
+                fontSize: '16px'
+              }}
+            >
+              Login
+            </button>
+
+            <button
+              onClick={() => setShowLogin(false)}
+              style={{
+                background: '#6c757d',
+                color: 'white',
+                border: 'none',
+                padding: '12px',
+                borderRadius: '25px',
+                cursor: 'pointer',
+                fontSize: '16px'
+              }}
+            >
+              Cancel
+            </button>
           </div>
         </div>
       )}
