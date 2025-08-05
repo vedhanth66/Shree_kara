@@ -62,6 +62,9 @@ const Kalaagruha = () => {
       localStorage.setItem('token', response.data.access_token);
       setIsLoggedIn(true);
       setShowLogin(false);
+
+      setLoginData({username: "", password: ""});
+
       alert('Login successful!');
     } catch (error) {
       alert('Login failed: ' + (error.response?.data?.detail || 'Unknown error'));
@@ -71,6 +74,7 @@ const Kalaagruha = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
+    setLoginData({username: "", password: ""});
   };
 
   const convertFileToBase64 = (file) => {
@@ -419,7 +423,11 @@ const Kalaagruha = () => {
                 Login
               </button>
               <button
-                onClick={() => setShowLogin(false)}
+                onClick={() => {
+                    setShowLogin(false);
+                    setLoginData({username: "", password: ""});
+                  }
+                }
                 style={{
                   flex: 1,
                   background: '#dc3545',

@@ -233,7 +233,7 @@ async def serve_frontend(request: Request, full_path: str):
     # For static files, try to serve them from the build directory
     if os.path.exists(build_path):
         # Check if it's a static file request
-        if full_path.startswith("static/") or full_path.endswith(('.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.ico', '.svg', '.woff', '.woff2')):
+        if full_path.startswith("static/") or full_path.endswith(('.mp4', '.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.ico', '.svg', '.woff', '.woff2')):
             static_file_path = os.path.join(build_path, full_path)
             if os.path.exists(static_file_path):
                 return FileResponse(static_file_path)

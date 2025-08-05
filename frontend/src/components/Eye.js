@@ -6,7 +6,6 @@ const Eye = () => {
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
-  const [poems, setPoems] = useState([]);
 
   useEffect(() => {
     fetchContent();
@@ -18,12 +17,10 @@ const Eye = () => {
       const [imagesRes, videosRes, poemsRes] = await Promise.all([
         axios.get(`${backendUrl}/api/images`),
         axios.get(`${backendUrl}/api/videos`),
-        axios.get(`${backendUrl}/api/poems`)
       ]);
       
       setImages(imagesRes.data);
       setVideos(videosRes.data);
-      setPoems(poemsRes.data);
     } catch (error) {
       console.error('Error fetching content:', error);
     }
