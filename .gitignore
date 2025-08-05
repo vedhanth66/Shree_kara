@@ -1,6 +1,8 @@
 # python
 venv
+.venv
 __pycache__
+uploads
 
 # js
 node_modules
