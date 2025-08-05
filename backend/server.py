@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 import base64
 from pydantic import BaseModel
 import shutil
+from bson import ObjectId
 
 load_dotenv()
 
@@ -110,15 +111,15 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
 
-        AUTHORS = db.Auth.find()
-        authors = (author["Username"] for author in AUTHORS)
-
-        if username is None or username not in authors:
+        user = db.Auth.find_one({"Username": username})
+        if user is None:
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-    
+
     return {"username": username}
 
 # API Routes
@@ -222,6 +223,40 @@ async def get_profile(current_user: dict = Depends(get_current_user)):
         "username": current_user["username"],
         "role": "author"
     }
+
+@app.delete("/api/delete/images/{image_id}")
+async def delete_image(image_id: str, current_user: dict = Depends(get_current_user)):
+    result = db.images.delete_one({
+        "_id": ObjectId(image_id), 
+        "uploaded_by": current_user["username"]})
+    
+    if result.deleted_count == 1:
+        return {"message": "Image deleted successfully"}
+    else:
+        raise HTTPException(status_code=404, detail="Image not found or unauthorized")
+
+@app.delete("/api/delete/videos/{video_id}")
+async def delete_video(video_id: str, current_user: dict = Depends(get_current_user)):
+    result = db.videos.delete_one({
+        "_id": ObjectId(video_id), 
+        "uploaded_by": current_user["username"]})
+    
+    if result.deleted_count == 1:
+        return {"message": "Video deleted successfully"}
+    else:
+        raise HTTPException(status_code=404, detail="Video not found or unauthorized")
+
+@app.delete("/api/delete/poems/{poem_id}")
+async def delete_poem(poem_id: str, current_user: dict = Depends(get_current_user)):
+    result = db.poems.delete_one({
+        "_id": ObjectId(poem_id),
+        "uploaded_by": current_user["username"]
+    })
+
+    if result.deleted_count == 1:
+        return {"message": "Poem deleted successfully"}
+    else:
+        raise HTTPException(status_code=404, detail="Poem not found or unauthorized")
 
 # Serve React app for all other routes (SPA fallback)
 @app.get("/{full_path:path}")
