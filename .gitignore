@@ -1,4 +1,12 @@
-node_modules
+# python
 venv
 __pycache__
+
+# js
+node_modules
 package-lock.json
+*/build/static/
+asset-manifest.json
+
+#general
+.env
