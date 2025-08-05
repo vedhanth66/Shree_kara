@@ -60,13 +60,63 @@ body {
 /* --- Intro video container --- */
 .intro_video_container {
   transition: opacity 0.75s ease-in-out;
-  height: 200px;
-  width: 200px;
+  /* height: 200px;
+  width: 200px; */
+
+  position: fixed;
+  top: 0; left: 0;
+  /* width: 99vw; */
+  /* height: 208vh; */
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: black;
+  z-index: 10000;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.intro_video_container video {
+  /* outline: 1px solid red; */
+  width: 100%;
+  /* height: 100%; */
+  /* max-width: 100%; */
+  /* max-height: 100%; */
+  /* object-fit: contain; */
+  /* No absolute positioning needed now */
+  transform: translate(0.5%, 3.5%);
+}
+
+/* Fade wipe overlay */
+.fade_wipe_overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, transparent 100%);
+  transform: translateX(-100%);
+  z-index: 2;
+  pointer-events: none;
+}
+/* wipe left to right animation */
+@keyframes wipeLeftToRight {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
+}
+
+.play-wipe {
+  animation: wipeLeftToRight 1.6s ease-in-out forwards;
+}
+
+/* fade out video smoothly */
+.fade-out-video {
+  animation: fadeVideoOut 1.6s ease-in-out forwards;
 }
 
 .intro_video_container.hidden {
   opacity: 0;
-  display: none;
+  /* display: none; */
 }
 
 /* --- Logo Container and Positioning Fix --- */
@@ -83,12 +133,17 @@ body {
 }
 
 .logo_wrapper {
-  width: 90%;
-  max-width: 375px;
+  width: 26%;
+  /* max-width: 375px; */
   aspect-ratio: 942 / 768;
   position: relative;
   margin: auto;
-  transform: translateX(-4%);
+  /* transform: translateX(-4%); */
+
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo {
@@ -311,9 +366,9 @@ body {
     display: flex;
   }
   
-  .logo_wrapper {
+  /* .logo_wrapper {
       max-width: 500px;
-  }
+  } */
 
   .sidebar {
     top: 0;
@@ -330,9 +385,9 @@ body {
     padding: 20px;
   }
 
-  .sidebar.open {
+  /* .sidebar.open {
     transform: translateX(0);
-  }
+  } */
 
   .sidebar ul {
     justify-content: center;
@@ -345,7 +400,12 @@ body {
     width: 250px;
   }
 
-  .logo_wrapper {
+  /* .intro_video_container {
+    position: fixed;
+    top: -3%; left: 1%;
+  } */
+
+  /* .logo_wrapper {
     opacity: 0;
     transform: scale(0.29);
     transition: opacity 2s ease-out, transform 2s ease-out;
@@ -354,5 +414,5 @@ body {
   .logo_wrapper.reveal {
     opacity: 1;
     transform: scale(1);
-  }
+  } */
 }
