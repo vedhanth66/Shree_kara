@@ -110,7 +110,11 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
-        if username is None or username not in AUTHORS:
+
+        AUTHORS = db.Auth.find()
+        authors = (author["Username"] for author in AUTHORS)
+
+        if username is None or username not in authors:
             raise credentials_exception
     except JWTError:
         raise credentials_exception
@@ -123,17 +127,18 @@ async def api_root():
     return {"message": "Shree Kara Studios API"}
 
 # Pre-defined authors (you can modify these)
-AUTHORS = {
-    "admin": get_password_hash("shree123"),
-    "author1": get_password_hash("kara456"),
-    "editor": get_password_hash("studios789")
-}
+# AUTHORS = {
+#     "admin": get_password_hash("shree123"),
+#     "author1": get_password_hash("kara456"),
+#     "editor": get_password_hash("studios789")
+# }
 
 @app.post("/api/auth/token", response_model=Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     # Check against pre-defined authors
-    if form_data.username in AUTHORS:
-        if verify_password(form_data.password, AUTHORS[form_data.username]):
+    AUTHORS = db.Auth.find()
+    for author in AUTHORS:
+        if author["Username"] == form_data.username and verify_password(form_data.password, author["Password"]):
             access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
             access_token = create_access_token(
                 data={"sub": form_data.username}, expires_delta=access_token_expires
