@@ -1,11 +1,13 @@
 # python
 venv
 __pycache__
+.venv
+uploads
 
 # js
 node_modules
 package-lock.json
-*/build/static/
+build
 asset-manifest.json
 
 #general
