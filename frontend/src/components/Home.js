@@ -5,14 +5,17 @@ import './Home.css';
 const Home = () => {
   const navigate = useNavigate();
   const videoRef = useRef(null);
-  const [isVideoEnded, setIsVideoEnded] = useState(false);
+  const [isVideoEnded, setIsVideoEnded] = useState(() => {
+    return sessionStorage.getItem("introVidShown") === "true";
+  });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState('Home');
 
-  useEffect(() => {
+  useEffect(() => {    
     // Clean up leftover transition elements
     const leftovers = document.querySelectorAll(".transition-image, .transition-overlay");
     leftovers.forEach(el => el.remove());
+    
 
     // Handle video end
     if (videoRef.current) {
@@ -46,6 +49,7 @@ const Home = () => {
   };
 
   const handleVideoEnd = () => {
+    sessionStorage.setItem("introVidShown", true);
     setIsVideoEnded(true);
   };
 
