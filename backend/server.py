@@ -3,17 +3,20 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+
 from pymongo import MongoClient
+from pydantic import BaseModel
+
 from passlib.context import CryptContext
 from jose import JWTError, jwt
-from datetime import datetime, timedelta
-from typing import Optional, List
-import os
 from dotenv import load_dotenv
-import base64
-from pydantic import BaseModel
-import shutil
+
+import os
+import datetime as dt
+from datetime import datetime, timedelta
 from bson import ObjectId
+
+from typing import Optional
 
 load_dotenv()
 
@@ -110,7 +113,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
+        username: str|None = payload.get("sub")
         if username is None:
             raise credentials_exception
 
@@ -127,30 +130,29 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 async def api_root():
     return {"message": "Shree Kara Studios API"}
 
-# Pre-defined authors (you can modify these)
-# AUTHORS = {
-#     "admin": get_password_hash("shree123"),
-#     "author1": get_password_hash("kara456"),
-#     "editor": get_password_hash("studios789")
-# }
-
 @app.post("/api/auth/token", response_model=Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     # Check against pre-defined authors
-    AUTHORS = db.Auth.find()
-    for author in AUTHORS:
-        if author["Username"] == form_data.username and verify_password(form_data.password, author["Password"]):
-            access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-            access_token = create_access_token(
-                data={"sub": form_data.username}, expires_delta=access_token_expires
-            )
-            return {"access_token": access_token, "token_type": "bearer"}
-    
-    raise HTTPException(
+
+    http_401_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid author credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
+    try:
+        AUTHORS = db.Auth.find()
+        for author in AUTHORS:
+            if author["Username"] == form_data.username and verify_password(form_data.password, author["Password"]):
+                access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+                access_token = create_access_token(
+                    data={"sub": form_data.username}, expires_delta=access_token_expires
+                )
+                return {"access_token": access_token, "token_type": "bearer"}
+    except Exception:    
+        raise http_401_exception
+    
+    raise http_401_exception
 
 # Upload routes
 @app.post("/api/upload/image")
@@ -186,7 +188,7 @@ async def upload_poem(poem: PoemUpload, current_user: dict = Depends(get_current
         "content": poem.content,
         "author": poem.author,
         "uploaded_by": current_user["username"],
-        "uploaded_at": datetime.utcnow()
+        "uploaded_at": datetime.now(dt.timezone.utc)
     }
     
     result = db.poems.insert_one(poem_doc)
@@ -196,25 +198,34 @@ async def upload_poem(poem: PoemUpload, current_user: dict = Depends(get_current
 @app.get("/api/images")
 async def get_images():
     images = []
-    for image in db.images.find().sort("uploaded_at", -1):
-        image["_id"] = str(image["_id"])
-        images.append(image)
+    try:
+        for image in db.images.find().sort("uploaded_at", -1):
+            image["_id"] = str(image["_id"])
+            images.append(image)
+    except Exception:
+        ... #ignore if db is not connected, and justreturn empty list
     return images
 
 @app.get("/api/videos")
 async def get_videos():
     videos = []
-    for video in db.videos.find().sort("uploaded_at", -1):
-        video["_id"] = str(video["_id"])
-        videos.append(video)
+    try:
+        for video in db.videos.find().sort("uploaded_at", -1):
+            video["_id"] = str(video["_id"])
+            videos.append(video)
+    except Exception:
+        ... #ignore if db is not connected, and justreturn empty list 
     return videos
 
 @app.get("/api/poems")
 async def get_poems():
     poems = []
-    for poem in db.poems.find().sort("uploaded_at", -1):
-        poem["_id"] = str(poem["_id"])
-        poems.append(poem)
+    try:
+        for poem in db.poems.find().sort("uploaded_at", -1):
+            poem["_id"] = str(poem["_id"])
+            poems.append(poem)
+    except Exception:
+        ... #ignore if db is not connected, and justreturn empty list
     return poems
 
 @app.get("/api/user/profile")
