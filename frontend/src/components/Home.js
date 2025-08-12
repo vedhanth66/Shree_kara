@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -171,10 +171,19 @@ const Home = () => {
       <div className={`sidebar ${isMenuOpen ? 'open' : ''} ${isVideoEnded ? 'visible' : ''}`}>
         <ul>
           <div className="hover-capsule"></div>
-          <li className={activeMenuItem === 'Home' ? 'active' : ''} onClick={() => setActiveMenuItem('Home')}>Home</li>
-          <li className={activeMenuItem === 'About us' ? 'active' : ''} onClick={() => setActiveMenuItem('About us')}>About us</li>
-          <li className={activeMenuItem === 'Services' ? 'active' : ''} onClick={() => setActiveMenuItem('Services')}>Services</li>
-          <li className={activeMenuItem === 'Contact' ? 'active' : ''} onClick={() => setActiveMenuItem('Contact')}>Contact</li>
+          <li className={activeMenuItem === 'Home' ? 'active' : ''} onClick={() => setActiveMenuItem('Home')}>
+            <Link to="/">Home</Link>
+          </li>
+          <li className={activeMenuItem === 'About us' ? 'active' : ''} onClick={() => setActiveMenuItem('About us')}>
+            <Link to="/Eye">About us</Link>
+          </li>
+          <li className={activeMenuItem === 'Services' ? 'active' : ''} onClick={() => setActiveMenuItem('Services')}>
+            <Link to="/Dhantha">Services</Link>
+          </li>
+          {/* Changed 'Contact' to 'Our Work' to match your other pages */}
+          <li className={activeMenuItem === 'Our Work' ? 'active' : ''} onClick={() => setActiveMenuItem('Our Work')}>
+            <Link to="/Shree">Our Work</Link>
+          </li>
         </ul>
       </div>
 
