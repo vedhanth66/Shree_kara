@@ -538,11 +538,11 @@ body {
 
 .form-group input:focus {
   outline: none;
-  border-color: rgba(255, 216, 0, 0.6);
+  border-color: rgba(255, 215, 0, 0.6);
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 
-    0 0 0 2px rgba(255, 216, 0, 0.1),
-    0 4px 15px rgba(255, 216, 0, 0.1);
+    0 0 0 2px rgba(255, 215, 0, 0.1),
+    0 4px 15px rgba(255, 215, 0, 0.1);
 }
 
 .form-group input::placeholder {
