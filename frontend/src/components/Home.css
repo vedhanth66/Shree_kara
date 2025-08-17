@@ -197,22 +197,27 @@ body {
 /* Enhanced Hover Effects with 3D Transform */
 #Shree:hover img {
   transform: scale(1.1) translateZ(20px);
-  filter: drop-shadow(0 0 20px rgba(255, 216, 0, 0.8)) brightness(1.3);
+  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) brightness(1.3);
+}
+
+#Music:hover img {
+  transform: scale(1.3) translateZ(35px) rotateX(10deg);
+  filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.9)) brightness(1.4);
 }
 
 #Kalaagruha:hover img {
   transform: scale(1.2) translateZ(30px) rotateX(5deg);
-  filter: drop-shadow(0 0 25px rgba(255, 216, 0, 0.9)) brightness(1.4);
+  filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.9)) brightness(1.4);
 }
 
 #Eye:hover img {
   transform: scale(1.4) translateZ(40px) rotateY(10deg);
-  filter: drop-shadow(0 0 30px rgba(255, 216, 0, 1)) brightness(1.5);
+  filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)) brightness(1.5);
 }
 
 #Dhantha:hover img {
   transform: scale(1.4) translateZ(35px) rotateZ(5deg);
-  filter: drop-shadow(0 0 28px rgba(255, 216, 0, 0.95)) brightness(1.45);
+  filter: drop-shadow(0 0 28px rgba(255, 215, 0, 0.95)) brightness(1.45);
 }
 
 /* Enhanced Active States */
