@@ -283,6 +283,45 @@ class BackendTester:
             self.log_test("Image Upload", False, "Connection error", str(e))
             return False
     
+    def test_video_upload(self):
+        """Test video upload endpoint"""
+        if not self.token:
+            self.log_test("Video Upload", False, "No valid token available")
+            return False
+        
+        headers = {"Authorization": f"Bearer {self.token}"}
+        
+        # Create a simple base64 encoded test video data (minimal)
+        test_video_b64 = "UklGRjIAAABXRUJQVlA4ICYAAACyAgCdASoBAAEALmk0mk0iIiIiIgBoSygABc6zbAAA/v56QAAAAA=="
+        
+        video_data = {
+            "title": "Test Video - Shree Kara Productions",
+            "description": "A sample video for Shree Kara Studios showcase",
+            "video_data": test_video_b64
+        }
+        
+        try:
+            response = requests.post(
+                f"{self.base_url}/api/upload/video",
+                json=video_data,
+                headers=headers
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "message" in data and "video_id" in data:
+                    self.log_test("Video Upload", True, "Video uploaded successfully")
+                    return True
+                else:
+                    self.log_test("Video Upload", False, "Missing expected response fields", data)
+                    return False
+            else:
+                self.log_test("Video Upload", False, f"HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Video Upload", False, "Connection error", str(e))
+            return False
+    
     def test_music_upload(self):
         """Test music upload endpoint"""
         if not self.token:
