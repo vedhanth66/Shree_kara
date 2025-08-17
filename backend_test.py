@@ -11,7 +11,7 @@ import sys
 from datetime import datetime
 
 # Backend URL from environment
-BACKEND_URL = "http://localhost:8001"
+BACKEND_URL = "http://localhost:8001"  # Using public endpoint for testing
 
 class BackendTester:
     def __init__(self):
