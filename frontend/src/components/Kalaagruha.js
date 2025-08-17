@@ -8,8 +8,6 @@ const Kalaagruha = () => {
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
-  const [loginData, setLoginData] = useState({ username: '', password: '' });
   const [uploadType, setUploadType] = useState('poem');
   const [uploadData, setUploadData] = useState({
     title: '',
@@ -18,6 +16,7 @@ const Kalaagruha = () => {
     description: '',
     file: null
   });
+  const [uploadLoading, setUploadLoading] = useState(false);
 
   useEffect(() => {
     fetchContent();
@@ -32,9 +31,6 @@ const Kalaagruha = () => {
   const fetchContent = async () => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-      localStorage.removeItem('token');
-      setIsLoggedIn(false);
-      setLoginData({ username: "", password: "" });
       const [poemsRes, imagesRes, videosRes] = await Promise.all([
         axios.get(`${backendUrl}/api/poems`),
         axios.get(`${backendUrl}/api/images`),
@@ -49,40 +45,6 @@ const Kalaagruha = () => {
     }
   };
 
-  const handleLogin = async () => {
-    try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-      localStorage.removeItem('token');
-      setIsLoggedIn(false);
-      setLoginData({ username: "", password: "" });
-      const formData = new FormData();
-      formData.append('username', loginData.username);
-      formData.append('password', loginData.password);
-
-      const response = await axios.post(`${backendUrl}/api/auth/token`, formData, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
-
-      localStorage.setItem('token', response.data.access_token);
-      setIsLoggedIn(true);
-      setShowLogin(false);
-
-      setLoginData({username: "", password: ""});
-
-      alert('Login successful!');
-    } catch (error) {
-      alert('Login failed: ' + (error.response?.data?.detail || 'Unknown error'));
-    }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    setLoginData({username: "", password: ""});
-  };
-
   const convertFileToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -92,18 +54,57 @@ const Kalaagruha = () => {
     });
   };
 
+  const showNotification = (message, type) => {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    Object.assign(notification.style, {
+      position: 'fixed',
+      top: '20px',
+      right: '20px',
+      padding: '12px 20px',
+      borderRadius: '8px',
+      color: 'white',
+      fontWeight: '500',
+      zIndex: '15000',
+      transform: 'translateX(400px)',
+      transition: 'transform 0.3s ease',
+      background: type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff'
+    });
+
+    document.body.appendChild(notification);
+    
+    requestAnimationFrame(() => {
+      notification.style.transform = 'translateX(0)';
+    });
+
+    setTimeout(() => {
+      notification.style.transform = 'translateX(400px)';
+      setTimeout(() => notification.remove(), 300);
+    }, 3000);
+  };
+
   const handleUpload = async () => {
+    if (!isLoggedIn) {
+      showNotification('Please login from the home page first', 'error');
+      return;
+    }
+
+    setUploadLoading(true);
+
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
       const token = localStorage.getItem('token');
-      localStorage.removeItem('token');
-      setIsLoggedIn(false);
-      setLoginData({ username: "", password: "" });
       
       let uploadPayload = {};
       let endpoint = '';
 
       if (uploadType === 'poem') {
+        if (!uploadData.title || !uploadData.content || !uploadData.author) {
+          showNotification('Please fill in all poem fields', 'error');
+          setUploadLoading(false);
+          return;
+        }
         uploadPayload = {
           title: uploadData.title,
           content: uploadData.content,
@@ -111,8 +112,9 @@ const Kalaagruha = () => {
         };
         endpoint = '/api/upload/poem';
       } else if (uploadType === 'image') {
-        if (!uploadData.file) {
-          alert('Please select an image file');
+        if (!uploadData.file || !uploadData.title) {
+          showNotification('Please select an image file and enter a title', 'error');
+          setUploadLoading(false);
           return;
         }
         const base64Data = await convertFileToBase64(uploadData.file);
@@ -123,8 +125,9 @@ const Kalaagruha = () => {
         };
         endpoint = '/api/upload/image';
       } else if (uploadType === 'video') {
-        if (!uploadData.file) {
-          alert('Please select a video file');
+        if (!uploadData.file || !uploadData.title) {
+          showNotification('Please select a video file and enter a title', 'error');
+          setUploadLoading(false);
           return;
         }
         const base64Data = await convertFileToBase64(uploadData.file);
@@ -143,410 +146,264 @@ const Kalaagruha = () => {
         }
       });
 
-      alert('Content uploaded successfully!');
+      showNotification('Content uploaded successfully!', 'success');
       setUploadData({ title: '', content: '', author: '', description: '', file: null });
       fetchContent();
     } catch (error) {
-      alert('Upload failed: ' + (error.response?.data?.detail || 'Unknown error'));
+      showNotification('Upload failed: ' + (error.response?.data?.detail || 'Unknown error'), 'error');
+    } finally {
+      setUploadLoading(false);
     }
   };
 
   const goBack = () => {
     navigate('/');
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    setLoginData({ username: "", password: "" });
   };
 
   const deleteContent = async (type, id) => {
-  if (!window.confirm('Are you sure you want to delete this item?')) return;
-  
-  try {
-    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-    const token = localStorage.getItem('token');
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    setLoginData({ username: "", password: "" });
+    if (!window.confirm('Are you sure you want to delete this item?')) return;
+    
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      const token = localStorage.getItem('token');
 
-    if (!token) {
-      alert('You are not logged in. Please log in to delete content.');
-      return;
+      if (!token) {
+        showNotification('You are not logged in. Please log in from the home page.', 'error');
+        return;
+      }
+
+      let endpoint = '';
+      if (type === 'poem') endpoint = `/api/delete/poems/${id}`;
+      else if (type === 'image') endpoint = `/api/delete/images/${id}`;
+      else if (type === 'video') endpoint = `/api/delete/videos/${id}`;
+
+      await axios.delete(`${backendUrl}${endpoint}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      showNotification('Deleted successfully!', 'success');
+      fetchContent();  
+    } catch (error) {
+      showNotification('Deletion failed: ' + (error.response?.data?.detail || 'Unknown error'), 'error');
     }
-
-    let endpoint = '';
-
-    if (type === 'poem') endpoint = `/api/delete/poems/${id}`;
-    else if (type === 'image') endpoint = `/api/delete/images/${id}`;
-    else if (type === 'video') endpoint = `/api/delete/videos/${id}`;
-
-    await axios.delete(`${backendUrl}${endpoint}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-
-    alert('Deleted successfully!');
-    fetchContent();  
-  } catch (error) {
-    alert('Deletion failed: ' + (error.response?.data?.detail || 'Unknown error'));
-  }
-};
-
+  };
 
   return (
-    <div style={{
-      backgroundColor: 'rgb(205, 204, 204)',
-      minHeight: '100vh',
-      padding: '2rem'
-    }}>
-      <button
-        onClick={goBack}
-        style={{
-          position: 'fixed',
-          top: '20px',
-          left: '20px',
-          background: 'rgba(0, 0, 0, 0.7)',
-          color: 'white',
-          border: 'none',
-          padding: '10px 20px',
-          borderRadius: '25px',
-          cursor: 'pointer',
-          zIndex: 1000,
-          fontSize: '16px'
-        }}
-      >
-        ← Back to Home
+    <div className="kalaagruha-container">
+      <button className="back-btn" onClick={goBack}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+        </svg>
+        Back to Home
       </button>
 
-      {/* Author Login/Logout */}
-      <div style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 1000 }}>
-        {isLoggedIn ? (
-          <button
-            onClick={handleLogout}
-            style={{
-              background: '#dc3545',
-              color: 'white',
-              border: 'none',
-              padding: '10px 20px',
-              borderRadius: '25px',
-              cursor: 'pointer',
-              fontSize: '16px'
-            }}
-          >
-            Logout
-          </button>
-        ) : (
-          <button
-            onClick={() => setShowLogin(true)}
-            style={{
-              background: '#007bff',
-              color: 'white',
-              border: 'none',
-              padding: '10px 20px',
-              borderRadius: '25px',
-              cursor: 'pointer',
-              fontSize: '16px'
-            }}
-          >
-            Author Login
-          </button>
-        )}
-      </div>
-
-      <div style={{ textAlign: 'center', paddingTop: '80px' }}>
-        <h1 style={{ fontSize: '4rem', color: '#333', marginBottom: '2rem' }}>
-          Kalaagruha - Content Hub
-        </h1>
-
-        {/* Author Upload Form */}
-        {isLoggedIn && (
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.9)',
-            borderRadius: '15px',
-            padding: '2rem',
-            maxWidth: '600px',
-            margin: '0 auto 3rem',
-            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)'
-          }}>
-            <h3 style={{ color: '#333', marginBottom: '1rem' }}>Upload Content</h3>
-            
-            <div style={{ marginBottom: '1rem' }}>
-              <label>Content Type: </label>
-              <select 
-                value={uploadType} 
-                onChange={(e) => setUploadType(e.target.value)}
-                style={{ padding: '8px', marginLeft: '10px', borderRadius: '5px' }}
-              >
-                <option value="poem">Poem</option>
-                <option value="image">Image</option>
-                <option value="video">Video</option>
-              </select>
+      <div className="content-wrapper">
+        <div className="header-section">
+          <h1 className="main-title">Kalaagruha</h1>
+          <p className="subtitle">Creative Content Gallery</p>
+          {!isLoggedIn && (
+            <div className="login-prompt">
+              <p>Please <strong>login from the home page</strong> to upload and manage content.</p>
             </div>
+          )}
+        </div>
 
-            <input
-              type="text"
-              placeholder="Title"
-              value={uploadData.title}
-              onChange={(e) => setUploadData({...uploadData, title: e.target.value})}
-              style={{ width: '100%', padding: '10px', margin: '5px 0', borderRadius: '5px', border: '1px solid #ccc' }}
-            />
+        {/* Author Upload Form - Only shown when logged in */}
+        {isLoggedIn && (
+          <div className="upload-section">
+            <div className="upload-card">
+              <h3>Upload Content</h3>
+              
+              <div className="form-group">
+                <label>Content Type</label>
+                <select 
+                  value={uploadType} 
+                  onChange={(e) => setUploadType(e.target.value)}
+                  className="select-input"
+                >
+                  <option value="poem">Poem</option>
+                  <option value="image">Image</option>
+                  <option value="video">Video</option>
+                </select>
+              </div>
 
-            {uploadType === 'poem' && (
-              <>
+              <div className="form-group">
                 <input
                   type="text"
-                  placeholder="Author"
-                  value={uploadData.author}
-                  onChange={(e) => setUploadData({...uploadData, author: e.target.value})}
-                  style={{ width: '100%', padding: '10px', margin: '5px 0', borderRadius: '5px', border: '1px solid #ccc' }}
+                  placeholder="Title *"
+                  value={uploadData.title}
+                  onChange={(e) => setUploadData({...uploadData, title: e.target.value})}
+                  className="form-input"
+                  required
                 />
-                <textarea
-                  placeholder="Poem content"
-                  value={uploadData.content}
-                  onChange={(e) => setUploadData({...uploadData, content: e.target.value})}
-                  rows="6"
-                  style={{ width: '100%', padding: '10px', margin: '5px 0', borderRadius: '5px', border: '1px solid #ccc' }}
-                />
-              </>
-            )}
+              </div>
 
-            {(uploadType === 'image' || uploadType === 'video') && (
-              <>
-                <input
-                  type="text"
-                  placeholder="Description"
-                  value={uploadData.description}
-                  onChange={(e) => setUploadData({...uploadData, description: e.target.value})}
-                  style={{ width: '100%', padding: '10px', margin: '5px 0', borderRadius: '5px', border: '1px solid #ccc' }}
-                />
-                <input
-                  type="file"
-                  accept={uploadType === 'image' ? 'image/*' : 'video/*'}
-                  onChange={(e) => setUploadData({...uploadData, file: e.target.files[0]})}
-                  style={{ width: '100%', padding: '10px', margin: '5px 0', borderRadius: '5px', border: '1px solid #ccc' }}
-                />
-              </>
-            )}
+              {uploadType === 'poem' && (
+                <>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      placeholder="Author *"
+                      value={uploadData.author}
+                      onChange={(e) => setUploadData({...uploadData, author: e.target.value})}
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <textarea
+                      placeholder="Poem content *"
+                      value={uploadData.content}
+                      onChange={(e) => setUploadData({...uploadData, content: e.target.value})}
+                      rows="6"
+                      className="form-textarea"
+                      required
+                    />
+                  </div>
+                </>
+              )}
 
-            <button
-              onClick={handleUpload}
-              style={{
-                background: '#28a745',
-                color: 'white',
-                border: 'none',
-                padding: '12px 30px',
-                borderRadius: '25px',
-                cursor: 'pointer',
-                fontSize: '16px',
-                marginTop: '10px'
-              }}
-            >
-              Upload {uploadType.charAt(0).toUpperCase() + uploadType.slice(1)}
-            </button>
+              {(uploadType === 'image' || uploadType === 'video') && (
+                <>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      placeholder="Description"
+                      value={uploadData.description}
+                      onChange={(e) => setUploadData({...uploadData, description: e.target.value})}
+                      className="form-input"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="file"
+                      accept={uploadType === 'image' ? 'image/*' : 'video/*'}
+                      onChange={(e) => setUploadData({...uploadData, file: e.target.files[0]})}
+                      className="file-input"
+                      required
+                    />
+                  </div>
+                </>
+              )}
+
+              <button
+                onClick={handleUpload}
+                disabled={uploadLoading}
+                className="upload-btn"
+              >
+                {uploadLoading ? 'Uploading...' : `Upload ${uploadType.charAt(0).toUpperCase() + uploadType.slice(1)}`}
+              </button>
+            </div>
           </div>
         )}
 
         {/* Content Display */}
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          {/* All Content Sections */}
+        <div className="content-grid">
+          {/* Poems Section */}
           {poems.length > 0 && (
-            <div style={{ marginBottom: '4rem' }}>
-              <h2 style={{ fontSize: '2rem', color: '#333', marginBottom: '1rem' }}>Poems</h2>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-                gap: '2rem'
-              }}>
+            <div className="content-section">
+              <h2 className="section-title">Poems</h2>
+              <div className="items-grid">
                 {poems.map((poem) => (
-                  <div key={poem._id} style={{
-                    background: 'rgba(255, 255, 255, 0.95)',
-                    borderRadius: '10px',
-                    padding: '2rem',
-                    textAlign: 'left'
-                  }}>
-                    <h3 style={{ color: '#333' }}>{poem.title}</h3>
-                    <div style={{ whiteSpace: 'pre-wrap', margin: '1rem 0' }}>{poem.content}</div>
-                    <p style={{ fontSize: '0.9rem', color: '#666' }}>by {poem.author}</p>
-
+                  <div key={poem._id} className="content-card poem-card">
+                    <h3 className="item-title">{poem.title}</h3>
+                    <div className="poem-content">{poem.content}</div>
+                    <p className="poem-author">— {poem.author}</p>
+                    
                     {isLoggedIn && (
                       <button
                         onClick={() => deleteContent('poem', poem._id)}
-                        style={{
-                          marginTop: '10px',
-                          background: '#dc3545',
-                          color: 'white',
-                          border: 'none',
-                          padding: '8px 15px',
-                          borderRadius: '5px',
-                          cursor: 'pointer',
-                        }}
+                        className="delete-btn"
                       >
-                        Delete Poem
+                        Delete
                       </button>
                     )}
-
                   </div>
                 ))}
               </div>
             </div>
           )}
 
+          {/* Images Section */}
           {images.length > 0 && (
-            <div style={{ marginBottom: '4rem' }}>
-              <h2 style={{ fontSize: '2rem', color: '#333', marginBottom: '1rem' }}>Images</h2>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '2rem'
-              }}>
+            <div className="content-section">
+              <h2 className="section-title">Images</h2>
+              <div className="items-grid">
                 {images.map((image) => (
-                  <div key={image._id} style={{
-                    background: 'rgba(255, 255, 255, 0.95)',
-                    borderRadius: '10px',
-                    padding: '1rem'
-                  }}>
-                    <h3 style={{ color: '#333' }}>{image.title}</h3>
-                    <img src={`data:image/jpeg;base64,${image.image_data}`} alt={image.title} style={{ width: '100%', borderRadius: '8px' }} />
+                  <div key={image._id} className="content-card image-card">
+                    <h3 className="item-title">{image.title}</h3>
+                    <div className="image-container">
+                      <img 
+                        src={`data:image/jpeg;base64,${image.image_data}`} 
+                        alt={image.title} 
+                        className="content-image"
+                      />
+                    </div>
+                    {image.description && (
+                      <p className="item-description">{image.description}</p>
+                    )}
 
-                      {isLoggedIn && (
-                          <button
-                            onClick={() => deleteContent('image', image._id)}
-                            style={{
-                              marginTop: '10px',
-                              background: '#dc3545',
-                              color: 'white',
-                              border: 'none',
-                              padding: '8px 15px',
-                              borderRadius: '5px',
-                              cursor: 'pointer',
-                            }}
-                          >
-                            Delete Image
-                          </button>
-                        )}
-
+                    {isLoggedIn && (
+                      <button
+                        onClick={() => deleteContent('image', image._id)}
+                        className="delete-btn"
+                      >
+                        Delete
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
           )}
 
+          {/* Videos Section */}
           {videos.length > 0 && (
-            <div style={{ marginBottom: '4rem' }}>
-              <h2 style={{ fontSize: '2rem', color: '#333', marginBottom: '1rem' }}>Videos</h2>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-                gap: '2rem'
-              }}>
+            <div className="content-section">
+              <h2 className="section-title">Videos</h2>
+              <div className="items-grid">
                 {videos.map((video) => (
-                  <div key={video._id} style={{
-                    background: 'rgba(255, 255, 255, 0.95)',
-                    borderRadius: '10px',
-                    padding: '1rem'
-                  }}>
-                    <h3 style={{ color: '#333' }}>{video.title}</h3>
-                    <video controls style={{ width: '100%', borderRadius: '8px' }} src={`data:video/mp4;base64,${video.video_data}`} />
+                  <div key={video._id} className="content-card video-card">
+                    <h3 className="item-title">{video.title}</h3>
+                    <div className="video-container">
+                      <video 
+                        controls 
+                        className="content-video"
+                        src={`data:video/mp4;base64,${video.video_data}`} 
+                      />
+                    </div>
+                    {video.description && (
+                      <p className="item-description">{video.description}</p>
+                    )}
 
-                      {isLoggedIn && (
-                          <button
-                            onClick={() => deleteContent('video', video._id)}
-                            style={{
-                              marginTop: '10px',
-                              background: '#dc3545',
-                              color: 'white',
-                              border: 'none',
-                              padding: '8px 15px',
-                              borderRadius: '5px',
-                              cursor: 'pointer',
-                            }}
-                          >
-                            Delete Video
-                          </button>
-                        )}
-
+                    {isLoggedIn && (
+                      <button
+                        onClick={() => deleteContent('video', video._id)}
+                        className="delete-btn"
+                      >
+                        Delete
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {poems.length === 0 && images.length === 0 && videos.length === 0 && (
+            <div className="empty-state">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" opacity="0.3">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              <h3>No Content Yet</h3>
+              <p>Be the first to share your creative work!</p>
             </div>
           )}
         </div>
       </div>
-
-      {/* Login Modal */}
-      {showLogin && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          background: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 2000,
-        }}>
-          <div style={{
-            background: 'white',
-            padding: '2rem',
-            borderRadius: '10px',
-            width: '320px',
-            boxShadow: '0 8px 16px rgba(0,0,0,0.25)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem'
-          }}>
-            <h2 style={{ margin: 0, textAlign: 'center' }}>Author Login</h2>
-            
-            <input
-              type="text"
-              placeholder="Username"
-              value={loginData.username}
-              onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
-              style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-            />
-            
-            <input
-              type="password"
-              placeholder="Password"
-              value={loginData.password}
-              onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-              style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-            />
-            
-            <button
-              onClick={handleLogin}
-              style={{
-                background: '#007bff',
-                color: 'white',
-                border: 'none',
-                padding: '12px',
-                borderRadius: '25px',
-                cursor: 'pointer',
-                fontSize: '16px'
-              }}
-            >
-              Login
-            </button>
-
-            <button
-              onClick={() => setShowLogin(false)}
-              style={{
-                background: '#6c757d',
-                color: 'white',
-                border: 'none',
-                padding: '12px',
-                borderRadius: '25px',
-                cursor: 'pointer',
-                fontSize: '16px'
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
