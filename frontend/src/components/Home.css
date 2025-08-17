@@ -94,7 +94,7 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background: radial-gradient(ellipse at bottom, #0d1b2a 0%, #000000 100%);
+  background: radial-gradient(ellipse at bottom, #1a1a1a 0%, #000000 100%);
   pointer-events: none;
   z-index: 1;
   perspective: 1000px;
