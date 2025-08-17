@@ -233,6 +233,8 @@ const Home = () => {
   };
 
   // Author login functions
+  // ... existing Home.js code ...
+
   const handleLogin = async () => {
     if (!loginData.username || !loginData.password) {
       setLoginError('Please enter both username and password');
@@ -272,6 +274,8 @@ const Home = () => {
       setLoginLoading(false);
     }
   };
+
+// ... existing Home.js code ...
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -460,12 +464,7 @@ const Home = () => {
                 {loginLoading ? 'Logging in...' : 'Login as Author'}
               </button>
             </form>
-            
-            <div className="demo-credentials">
-              <p><strong>Demo Credentials:</strong></p>
-              <p>Username: <code>admin</code> | Password: <code>shree123</code></p>
-              <p>Username: <code>author1</code> | Password: <code>kara456</code></p>
-            </div>
+          
           </div>
         </div>
       )}

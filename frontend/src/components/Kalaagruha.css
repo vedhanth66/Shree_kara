@@ -72,27 +72,6 @@
   font-weight: 400;
 }
 
-.login-prompt {
-  background: rgba(255, 216, 0, 0.1);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 216, 0, 0.3);
-  border-radius: 15px;
-  padding: 1.5rem;
-  margin: 2rem auto;
-  max-width: 600px;
-  box-shadow: 0 8px 25px rgba(255, 216, 0, 0.1);
-}
-
-.login-prompt p {
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0;
-  font-size: 1rem;
-}
-
-.login-prompt strong {
-  color: #FFD800;
-}
-
 /* Upload Section */
 .upload-section {
   margin-bottom: 4rem;

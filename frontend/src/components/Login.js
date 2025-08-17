@@ -86,11 +86,6 @@ const Login = ({ onLogin, onClose }) => {
           </button>
         </form>
         
-        <div className="demo-credentials">
-          <p><strong>Demo Credentials:</strong></p>
-          <p>Username: <code>admin</code> | Password: <code>shree123</code></p>
-          <p>Username: <code>author1</code> | Password: <code>kara456</code></p>
-        </div>
       </div>
     </div>
   );

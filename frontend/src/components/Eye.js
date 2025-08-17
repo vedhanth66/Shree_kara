@@ -14,9 +14,9 @@ const Eye = () => {
   const fetchContent = async () => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-      const [imagesRes, videosRes, poemsRes] = await Promise.all([
-        axios.get(`${backendUrl}/api/images`),
-        axios.get(`${backendUrl}/api/videos`),
+      const [imagesRes, videosRes] = await Promise.all([
+        axios.get(`${backendUrl}/api/images/eye`),
+        axios.get(`${backendUrl}/api/videos/eye`),
       ]);
       
       setImages(imagesRes.data);

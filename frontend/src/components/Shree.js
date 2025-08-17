@@ -15,8 +15,8 @@ const Shree = () => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
       const [poemsRes, imagesRes] = await Promise.all([
-        axios.get(`${backendUrl}/api/poems`),
-        axios.get(`${backendUrl}/api/images`)
+        axios.get(`${backendUrl}/api/poems/shree`),
+        axios.get(`${backendUrl}/api/images/shree`)
       ]);
       
       setPoems(poemsRes.data);

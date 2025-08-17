@@ -77,26 +77,26 @@ class ImageUpload(BaseModel):
     title: str
     description: Optional[str] = None
     image_data: str  # base64 encoded image
-    target: Optional[str] = "kalaagruha"  # where to place content
+    target: str      # where to place content
 
 class VideoUpload(BaseModel):
     title: str
     description: Optional[str] = None
     video_data: str  # base64 encoded video
-    target: Optional[str] = "kalaagruha"  # where to place content
+    target: str      # where to place content
 
 class PoemUpload(BaseModel):
     title: str
     content: str
     author: str
-    target: Optional[str] = "kalaagruha"  # where to place content
+    target: str      # where to place content
 
 class MusicUpload(BaseModel):
     title: str
     description: Optional[str] = None
     music_data: str  # base64 encoded audio
     artist: Optional[str] = None
-    target: Optional[str] = "music"  # where to place content
+    target: str      # where to place content
 
 # Utility functions
 def verify_password(plain_password, hashed_password):

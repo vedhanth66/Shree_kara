@@ -15,8 +15,8 @@ const Dhantha = () => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
       const [imagesRes, videosRes] = await Promise.all([
-        axios.get(`${backendUrl}/api/images`),
-        axios.get(`${backendUrl}/api/videos`)
+        axios.get(`${backendUrl}/api/images/dhantha`),
+        axios.get(`${backendUrl}/api/videos/dhantha`)
       ]);
       
       setImages(imagesRes.data);

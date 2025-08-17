@@ -23,11 +23,17 @@ const Author = () => {
     videos: 0,
     music: 0
   });
+  const [content, setContent] = useState({
+    poems: [],
+    images: [],
+    videos: [],
+    music: []
+  });
 
   useEffect(() => {
     checkAuthStatus();
     if (isLoggedIn) {
-      fetchStats();
+      fetchContent();
     }
   }, [isLoggedIn]);
 
@@ -40,7 +46,7 @@ const Author = () => {
     setIsLoggedIn(true);
   };
 
-  const fetchStats = async () => {
+  const fetchContent = async () => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
       const [poemsRes, imagesRes, videosRes, musicRes] = await Promise.all([
@@ -56,8 +62,14 @@ const Author = () => {
         videos: videosRes.data.length,
         music: musicRes.data.length
       });
+      setContent({
+        poems: poemsRes.data,
+        images: imagesRes.data,
+        videos: videosRes.data,
+        music: musicRes.data
+      });
     } catch (error) {
-      console.error('Error fetching stats:', error);
+      console.error('Error fetching content:', error);
     }
   };
 
@@ -177,11 +189,42 @@ const Author = () => {
 
       showNotification('Content uploaded successfully!', 'success');
       setUploadData({ title: '', content: '', author: '', artist: '', description: '', file: null });
-      fetchStats();
+      fetchContent();
     } catch (error) {
       showNotification('Upload failed: ' + (error.response?.data?.detail || 'Unknown error'), 'error');
     } finally {
       setUploadLoading(false);
+    }
+  };
+
+  const deleteContent = async (type, id) => {
+    if (!window.confirm('Are you sure you want to delete this item?')) return;
+    
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        showNotification('You are not logged in. Please log in from the home page.', 'error');
+        return;
+      }
+
+      let endpoint = '';
+      if (type === 'poem') endpoint = `/api/delete/poems/${id}`;
+      else if (type === 'image') endpoint = `/api/delete/images/${id}`;
+      else if (type === 'video') endpoint = `/api/delete/videos/${id}`;
+      else if (type === 'music') endpoint = `/api/delete/music/${id}`;
+
+      await axios.delete(`${backendUrl}${endpoint}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      showNotification('Deleted successfully!', 'success');
+      fetchContent();  
+    } catch (error) {
+      showNotification('Deletion failed: ' + (error.response?.data?.detail || 'Unknown error'), 'error');
     }
   };
 
@@ -398,6 +441,59 @@ const Author = () => {
               {uploadLoading ? 'Uploading...' : `Upload ${uploadType.charAt(0).toUpperCase() + uploadType.slice(1)}`}
             </button>
           </div>
+        </div>
+
+        {/* Content Management Section */}
+        <div className="content-management-section">
+          <h2>Manage Content</h2>
+          {/* Poems */}
+          {content.poems.length > 0 && (
+            <div className="content-list">
+              <h3>Poems</h3>
+              {content.poems.map(item => (
+                <div key={item._id} className="content-item">
+                  <span>{item.title}</span>
+                  <button onClick={() => deleteContent('poem', item._id)} className="delete-btn">Delete</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Images */}
+          {content.images.length > 0 && (
+            <div className="content-list">
+              <h3>Images</h3>
+              {content.images.map(item => (
+                <div key={item._id} className="content-item">
+                  <span>{item.title}</span>
+                  <button onClick={() => deleteContent('image', item._id)} className="delete-btn">Delete</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Videos */}
+          {content.videos.length > 0 && (
+            <div className="content-list">
+              <h3>Videos</h3>
+              {content.videos.map(item => (
+                <div key={item._id} className="content-item">
+                  <span>{item.title}</span>
+                  <button onClick={() => deleteContent('video', item._id)} className="delete-btn">Delete</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Music */}
+          {content.music.length > 0 && (
+            <div className="content-list">
+              <h3>Music</h3>
+              {content.music.map(item => (
+                <div key={item._id} className="content-item">
+                  <span>{item.title}</span>
+                  <button onClick={() => deleteContent('music', item._id)} className="delete-btn">Delete</button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
