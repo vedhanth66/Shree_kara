@@ -22,12 +22,14 @@ load_dotenv()
 
 app = FastAPI(title="Shree Kara Studios API")
 
-# CORS middleware
+# CORS middleware - Fixed configuration
+from fastapi.middleware.cors import CORSMiddleware
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
