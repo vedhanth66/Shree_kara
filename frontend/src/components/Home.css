@@ -223,7 +223,7 @@ body {
 /* Enhanced Active States */
 .logo div.active-glow img {
   transform: scale(1.15) translateZ(25px);
-  filter: drop-shadow(0 0 25px rgba(255, 216, 0, 0.9)) brightness(1.4);
+  filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.9)) brightness(1.4);
 }
 
 /* Optimized Transition Elements */
