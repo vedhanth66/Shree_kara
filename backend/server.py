@@ -200,6 +200,7 @@ async def upload_video(video: VideoUpload, current_user: dict = Depends(get_curr
         "title": video.title,
         "description": video.description,
         "video_data": video.video_data,
+        "target": video.target,
         "uploaded_by": current_user["username"],
         "uploaded_at": datetime.utcnow()
     }
@@ -213,6 +214,7 @@ async def upload_poem(poem: PoemUpload, current_user: dict = Depends(get_current
         "title": poem.title,
         "content": poem.content,
         "author": poem.author,
+        "target": poem.target,
         "uploaded_by": current_user["username"],
         "uploaded_at": datetime.now(dt.timezone.utc)
     }
