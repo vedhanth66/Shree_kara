@@ -394,6 +394,10 @@ const Home = () => {
                  onMouseEnter={() => handleMouseEnter('Shree')} onMouseLeave={handleMouseLeave}>
               <img src="/Shree.png" alt="Shree" />
             </div>
+            <div id="Music" className={activeLogo === 'Music' ? 'active-glow' : ''} onClick={(e) => { e.stopPropagation(); handleLogoInteraction('Music', '/Music', 300); }}
+                 onMouseEnter={() => handleMouseEnter('Music')} onMouseLeave={handleMouseLeave}>
+              <img src="/Music.png" alt="Music" />
+            </div>
             <div id="Eye" className={activeLogo === 'Eye' ? 'active-glow' : ''} onClick={(e) => { e.stopPropagation(); handleLogoInteraction('Eye', '/Eye', 200); }}
                  onMouseEnter={() => handleMouseEnter('Eye')} onMouseLeave={handleMouseLeave}>
               <img src="/Eye.png" alt="Eye" />
