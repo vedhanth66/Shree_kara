@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background: radial-gradient(ellipse at bottom, #0d1b2a 0%, #000000 100%);
+  background: radial-gradient(ellipse at bottom, #1a1a1a 0%, #000000 100%);
   overflow-x: hidden;
 }
 
