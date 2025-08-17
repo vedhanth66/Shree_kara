@@ -131,6 +131,7 @@ body {
 }
 
 #Shree,
+#Music,
 #Eye,
 #Dhantha,
 #Kalaagruha {
@@ -144,6 +145,13 @@ body {
   width: 90%;
   height: 95%;
   position: absolute;
+}
+
+#Music {
+  top: 15%;
+  left: 18%;
+  width: 25%;
+  z-index: 3;
 }
 
 #Eye {
