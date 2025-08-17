@@ -552,7 +552,7 @@ body {
 .submit-btn {
   width: 100%;
   padding: 14px;
-  background: linear-gradient(135deg, #FFD800, #FFA500);
+  background: linear-gradient(135deg, #FFD700, #FFA500);
   border: none;
   border-radius: 12px;
   color: #000;
@@ -566,9 +566,9 @@ body {
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #FFA500, #FFD800);
+  background: linear-gradient(135deg, #FFA500, #FFD700);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 216, 0, 0.3);
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
 }
 
 .submit-btn:disabled {
