@@ -24,10 +24,10 @@ body {
   display: block;
   height: 3px;
   width: 100%;
-  background: linear-gradient(45deg, #FFD800, #FFA500);
+  background: linear-gradient(45deg, #FFD700, #FFA500);
   border-radius: 3px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 10px rgba(255, 216, 0, 0.3);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
 .hamburger-menu.active span:nth-child(1) {
