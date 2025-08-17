@@ -37,9 +37,9 @@ client = MongoClient(MONGO_URL)
 db = client.shree_kara_db
 
 # Security
-SECRET_KEY = os.getenv("SECRET_KEY", "your_secret_key_here")
+SECRET_KEY = os.getenv("SECRET_KEY", "shree_kara_secret_key_2024_secure")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "1440"))
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token")
@@ -113,7 +113,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str|None = payload.get("sub")
+        username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
 
@@ -203,7 +203,7 @@ async def get_images():
             image["_id"] = str(image["_id"])
             images.append(image)
     except Exception:
-        ... #ignore if db is not connected, and justreturn empty list
+        pass
     return images
 
 @app.get("/api/videos")
@@ -214,18 +214,18 @@ async def get_videos():
             video["_id"] = str(video["_id"])
             videos.append(video)
     except Exception:
-        ... #ignore if db is not connected, and justreturn empty list 
+        pass
     return videos
 
 @app.get("/api/poems")
 async def get_poems():
     poems = []
     try:
-        for poem in db.poems.find().sort("uploaded_at", -1):
+        for poem in db.poems.find().sort("updated_at", -1):
             poem["_id"] = str(poem["_id"])
             poems.append(poem)
     except Exception:
-        ... #ignore if db is not connected, and justreturn empty list
+        pass
     return poems
 
 @app.get("/api/user/profile")
