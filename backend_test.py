@@ -370,6 +370,7 @@ class BackendTester:
             ("Poem Upload (Missing Fields)", self.test_poem_upload_missing_fields),
             ("Image Upload", self.test_image_upload),
             ("Video Upload", self.test_video_upload),
+            ("Music Upload", self.test_music_upload),
             ("Public Endpoints", self.test_public_endpoints)
         ]
         
