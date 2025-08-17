@@ -223,11 +223,44 @@ async def upload_poem(poem: PoemUpload, current_user: dict = Depends(get_current
     return {"message": "Poem uploaded successfully", "poem_id": str(result.inserted_id)}
 
 # Get routes
+@app.get("/api/music")
+async def get_music():
+    music = []
+    try:
+        for track in db.music.find().sort("uploaded_at", -1):
+            track["_id"] = str(track["_id"])
+            music.append(track)
+    except Exception:
+        pass
+    return music
+
+@app.get("/api/music/{target}")
+async def get_music_by_target(target: str):
+    music = []
+    try:
+        for track in db.music.find({"target": target}).sort("uploaded_at", -1):
+            track["_id"] = str(track["_id"])
+            music.append(track)
+    except Exception:
+        pass
+    return music
+
 @app.get("/api/images")
 async def get_images():
     images = []
     try:
         for image in db.images.find().sort("uploaded_at", -1):
+            image["_id"] = str(image["_id"])
+            images.append(image)
+    except Exception:
+        pass
+    return images
+
+@app.get("/api/images/{target}")
+async def get_images_by_target(target: str):
+    images = []
+    try:
+        for image in db.images.find({"target": target}).sort("uploaded_at", -1):
             image["_id"] = str(image["_id"])
             images.append(image)
     except Exception:
@@ -245,11 +278,33 @@ async def get_videos():
         pass
     return videos
 
+@app.get("/api/videos/{target}")
+async def get_videos_by_target(target: str):
+    videos = []
+    try:
+        for video in db.videos.find({"target": target}).sort("uploaded_at", -1):
+            video["_id"] = str(video["_id"])
+            videos.append(video)
+    except Exception:
+        pass
+    return videos
+
 @app.get("/api/poems")
 async def get_poems():
     poems = []
     try:
-        for poem in db.poems.find().sort("updated_at", -1):
+        for poem in db.poems.find().sort("uploaded_at", -1):
+            poem["_id"] = str(poem["_id"])
+            poems.append(poem)
+    except Exception:
+        pass
+    return poems
+
+@app.get("/api/poems/{target}")
+async def get_poems_by_target(target: str):
+    poems = []
+    try:
+        for poem in db.poems.find({"target": target}).sort("uploaded_at", -1):
             poem["_id"] = str(poem["_id"])
             poems.append(poem)
     except Exception:
