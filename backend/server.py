@@ -164,6 +164,21 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     
     raise http_401_exception
 
+@app.post("/api/upload/music")
+async def upload_music(music: MusicUpload, current_user: dict = Depends(get_current_user)):
+    music_doc = {
+        "title": music.title,
+        "description": music.description,
+        "music_data": music.music_data,
+        "artist": music.artist,
+        "target": music.target,
+        "uploaded_by": current_user["username"],
+        "uploaded_at": datetime.utcnow()
+    }
+    
+    result = db.music.insert_one(music_doc)
+    return {"message": "Music uploaded successfully", "music_id": str(result.inserted_id)}
+
 # Upload routes
 @app.post("/api/upload/image")
 async def upload_image(image: ImageUpload, current_user: dict = Depends(get_current_user)):
