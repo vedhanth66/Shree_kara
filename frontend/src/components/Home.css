@@ -409,12 +409,12 @@ body {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #FFD800, #FFA500);
+  background: linear-gradient(135deg, #FFD700, #FFA500);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #000;
-  box-shadow: 0 4px 15px rgba(255, 216, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
 }
 
 .logout-btn {
