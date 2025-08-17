@@ -52,12 +52,12 @@ os.makedirs(uploads_dir, exist_ok=True)
 frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../frontend"))
 build_path = os.path.join(frontend_path, "build")
 
-# Serve React build static files
-if os.path.exists(build_path):
-    app.mount("/static", StaticFiles(directory=os.path.join(build_path, "static")), name="static")
+# Static file serving temporarily disabled for testing
+# if os.path.exists(build_path):
+#     app.mount("/static", StaticFiles(directory=os.path.join(build_path, "static")), name="static")
 
 # Serve assets from app root for backward compatibility
-app.mount("/assets", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "..")), name="assets")
+# app.mount("/assets", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "..")), name="assets")
 
 # Pydantic models
 class UserCreate(BaseModel):
