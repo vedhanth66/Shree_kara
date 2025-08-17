@@ -127,6 +127,7 @@ class BackendTester:
             "/api/upload/poem",
             "/api/upload/image", 
             "/api/upload/video",
+            "/api/upload/music",
             "/api/user/profile"
         ]
         
