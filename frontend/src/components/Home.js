@@ -259,8 +259,13 @@ const Home = () => {
       setShowLogin(false);
       setLoginData({ username: '', password: '' });
 
-      // Success notification
-      showNotification('Login successful! Welcome back.', 'success');
+      // Success notification and redirect to author dashboard
+      showNotification('Login successful! Redirecting to dashboard...', 'success');
+      
+      // Redirect to author dashboard
+      setTimeout(() => {
+        navigate('/author');
+      }, 1000);
     } catch (error) {
       setLoginError(error.response?.data?.detail || 'Login failed. Please check your credentials.');
     } finally {
