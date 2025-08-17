@@ -312,15 +312,15 @@ body {
 
 .sidebar ul li:hover,
 .sidebar ul li.active {
-  color: #FFD800;
-  text-shadow: 0 0 10px rgba(255, 216, 0, 0.6);
+  color: #FFD700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
   transform: translateX(3px);
 }
 
 .sidebar .hover-capsule {
   position: absolute;
-  background: linear-gradient(135deg, rgba(255, 216, 0, 0.15), rgba(255, 165, 0, 0.1));
-  border: 2px solid rgba(255, 216, 0, 0.6);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 165, 0, 0.1));
+  border: 2px solid rgba(255, 215, 0, 0.6);
   border-radius: 25px;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
@@ -329,8 +329,8 @@ body {
   backdrop-filter: blur(10px);
   opacity: 0;
   box-shadow: 
-    0 4px 15px rgba(255, 216, 0, 0.2),
-    inset 0 1px 0 rgba(255, 216, 0, 0.3);
+    0 4px 15px rgba(255, 215, 0, 0.2),
+    inset 0 1px 0 rgba(255, 215, 0, 0.3);
 }
 
 .sidebar ul li a {
