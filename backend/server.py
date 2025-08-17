@@ -77,6 +77,7 @@ class ImageUpload(BaseModel):
     title: str
     description: Optional[str] = None
     image_data: str  # base64 encoded image
+    target: Optional[str] = "kalaagruha"  # where to place content
 
 class VideoUpload(BaseModel):
     title: str
