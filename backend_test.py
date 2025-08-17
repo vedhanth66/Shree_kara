@@ -328,7 +328,8 @@ class BackendTester:
         public_endpoints = [
             "/api/poems",
             "/api/images", 
-            "/api/videos"
+            "/api/videos",
+            "/api/music"
         ]
         
         all_passed = True
