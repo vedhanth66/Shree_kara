@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Home.css';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -12,6 +13,13 @@ const Home = () => {
   const [activeMenuItem, setActiveMenuItem] = useState('Home');
   const [hoveredLogo, setHoveredLogo] = useState(null);
   const [startLogoAnimation, setStartLogoAnimation] = useState(false);
+  
+  // Author login states
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [loginData, setLoginData] = useState({ username: '', password: '' });
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   // New state to track the selected logo on touch devices
   const [activeLogo, setActiveLogo] = useState(null);
@@ -36,6 +44,9 @@ const Home = () => {
     const animationTimeout = setTimeout(() => {
       setStartLogoAnimation(true);
     }, 7000);
+
+    // Check auth status
+    checkAuthStatus();
 
     return () => {
       if (currentVideoRef) {
@@ -88,16 +99,21 @@ const Home = () => {
     if (container && !container.querySelector('.particles-container')) {
       const particles = document.createElement('div');
       particles.className = 'particles-container';
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 30; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         particle.style.left = `${Math.random() * 100}%`;
         particle.style.animationDelay = `${Math.random() * 10}s`;
-        particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+        particle.style.animationDuration = `${Math.random() * 25 + 15}s`;
         particles.appendChild(particle);
       }
       container.appendChild(particles);
     }
+  };
+
+  const checkAuthStatus = () => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
   };
 
   const handleVideoEnd = () => {
@@ -109,6 +125,7 @@ const Home = () => {
     setIsMenuOpen(prev => !prev);
   };
 
+  // Optimized transition with GPU acceleration and better performance
   const navigateWithTransition = (targetPath, originElement, scaleValue) => {
     const img = originElement.querySelector("img");
     if (!img) return;
@@ -116,12 +133,26 @@ const Home = () => {
     if (isMenuOpen) setIsMenuOpen(false);
 
     const rect = img.getBoundingClientRect();
+    
+    // Create optimized overlay
     const overlay = document.createElement("div");
     overlay.className = "transition-overlay";
-    overlay.style.opacity = "0"; // Ensure fade works
+    Object.assign(overlay.style, {
+      position: "fixed",
+      top: "0",
+      left: "0",
+      width: "100vw",
+      height: "100vh",
+      background: "radial-gradient(circle, rgba(255,216,0,0.1) 0%, rgba(0,0,0,0.8) 100%)",
+      zIndex: "9998",
+      opacity: "0",
+      backdropFilter: "blur(0px)",
+      transition: "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+    });
+
+    // Create optimized clone with GPU acceleration
     const clone = img.cloneNode(true);
     clone.className = "transition-image";
-
     Object.assign(clone.style, {
       position: "fixed",
       top: `${rect.top}px`,
@@ -131,29 +162,44 @@ const Home = () => {
       objectFit: "contain",
       zIndex: "9999",
       pointerEvents: "none",
-      transition: "all 2s cubic-bezier(0.4, 0, 0.2, 1)",
+      transition: "transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 1s ease",
       transformOrigin: "center center",
-      filter: "drop-shadow(0 0 50px #FFD800)"
+      transform: "translateZ(0)", // Force GPU acceleration
+      willChange: "transform, filter", // Optimize for animation
+      filter: "drop-shadow(0 0 20px rgba(255,216,0,0.6)) brightness(1.2)"
     });
 
     document.body.appendChild(overlay);
     document.body.appendChild(clone);
 
+    // Trigger animation with RAF for smooth performance
     requestAnimationFrame(() => {
       overlay.style.opacity = "1";
-      clone.style.top = "50%";
-      clone.style.left = "50%";
-      clone.style.transform = `translate(-50%, -50%) scale(${scaleValue}) rotateY(360deg)`;
-      clone.style.filter = "drop-shadow(0 0 100px #FFD800) brightness(2)";
+      overlay.style.backdropFilter = "blur(10px)";
+      
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      
+      clone.style.transform = `
+        translate(${centerX - rect.left - rect.width/2}px, ${centerY - rect.top - rect.height/2}px) 
+        scale(${scaleValue/100}) 
+        rotateY(180deg) 
+        rotateZ(360deg)
+        translateZ(50px)
+      `;
+      clone.style.filter = "drop-shadow(0 0 50px rgba(255,216,0,0.9)) brightness(2) saturate(1.5)";
     });
 
+    // Navigate and cleanup with proper timing
     setTimeout(() => {
       navigate(targetPath);
+      
+      // Cleanup after navigation
       setTimeout(() => {
-        overlay.remove();
-        clone.remove();
-      }, 200);
-    }, 1200);
+        overlay?.remove();
+        clone?.remove();
+      }, 100);
+    }, 800);
   };
 
   // Unified handler for both click and touch
@@ -162,16 +208,13 @@ const Home = () => {
     if (!element) return;
 
     if (isTouchDevice) {
-      // If tapping the already active logo, navigate and hide text
       if (activeLogo === elementId) {
-        setActiveLogo(null); // Hide the text
+        setActiveLogo(null);
         navigateWithTransition(path, element, scale);
       } else {
-        // Otherwise, just set it as active to show the text
         setActiveLogo(elementId);
       }
     } else {
-      // For desktop, click always navigates
       navigateWithTransition(path, element, scale);
     }
   };
@@ -187,6 +230,79 @@ const Home = () => {
     if (!isTouchDevice) {
       setHoveredLogo(null);
     }
+  };
+
+  // Author login functions
+  const handleLogin = async () => {
+    if (!loginData.username || !loginData.password) {
+      setLoginError('Please enter both username and password');
+      return;
+    }
+
+    setLoginLoading(true);
+    setLoginError('');
+
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      const formData = new FormData();
+      formData.append('username', loginData.username);
+      formData.append('password', loginData.password);
+
+      const response = await axios.post(`${backendUrl}/api/auth/token`, formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      localStorage.setItem('token', response.data.access_token);
+      setIsLoggedIn(true);
+      setShowLogin(false);
+      setLoginData({ username: '', password: '' });
+
+      // Success notification
+      showNotification('Login successful! Welcome back.', 'success');
+    } catch (error) {
+      setLoginError(error.response?.data?.detail || 'Login failed. Please check your credentials.');
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    setLoginData({ username: '', password: '' });
+    showNotification('Logged out successfully', 'info');
+  };
+
+  const showNotification = (message, type) => {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    Object.assign(notification.style, {
+      position: 'fixed',
+      top: '20px',
+      right: '20px',
+      padding: '12px 20px',
+      borderRadius: '8px',
+      color: 'white',
+      fontWeight: '500',
+      zIndex: '15000',
+      transform: 'translateX(400px)',
+      transition: 'transform 0.3s ease',
+      background: type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff'
+    });
+
+    document.body.appendChild(notification);
+    
+    requestAnimationFrame(() => {
+      notification.style.transform = 'translateX(0)';
+    });
+
+    setTimeout(() => {
+      notification.style.transform = 'translateX(400px)';
+      setTimeout(() => notification.remove(), 300);
+    }, 3000);
   };
 
   // The text to display is either from hover (desktop) or active tap (mobile)
@@ -217,6 +333,33 @@ const Home = () => {
         </div>
       )}
 
+      {/* Author Login/Logout - Only shown after video ends */}
+      {isVideoEnded && (
+        <div className="author-login-container">
+          {isLoggedIn ? (
+            <div className="author-profile">
+              <div className="profile-avatar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+              </div>
+              <button className="logout-btn" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button className="author-login-btn" onClick={() => setShowLogin(true)}>
+              <div className="login-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+              </div>
+              <span>Author</span>
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Sidebar */}
       <div className={`sidebar ${isMenuOpen ? 'open' : ''} ${isVideoEnded ? 'visible' : ''}`}>
         <ul>
@@ -232,6 +375,9 @@ const Home = () => {
           </li>
           <li className={activeMenuItem === 'Our Work' ? 'active' : ''} onClick={() => setActiveMenuItem('Our Work')}>
             <Link to="/Shree">Our Work</Link>
+          </li>
+          <li className={activeMenuItem === 'Gallery' ? 'active' : ''} onClick={() => setActiveMenuItem('Gallery')}>
+            <Link to="/Kalaagruha">Gallery</Link>
           </li>
         </ul>
       </div>
@@ -262,6 +408,58 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      {/* Login Modal */}
+      {showLogin && (
+        <div className="login-overlay" onClick={() => setShowLogin(false)}>
+          <div className="login-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setShowLogin(false)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+            </button>
+            
+            <h2>Author Login</h2>
+            <p className="login-subtitle">Enter your credentials to manage content</p>
+            
+            {loginError && <div className="error-message">{loginError}</div>}
+            
+            <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
+              <div className="form-group">
+                <input
+                  type="text"
+                  placeholder="Author Username"
+                  value={loginData.username}
+                  onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
+                  required
+                  disabled={loginLoading}
+                />
+              </div>
+              
+              <div className="form-group">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={loginData.password}
+                  onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                  required
+                  disabled={loginLoading}
+                />
+              </div>
+              
+              <button type="submit" className="submit-btn" disabled={loginLoading}>
+                {loginLoading ? 'Logging in...' : 'Login as Author'}
+              </button>
+            </form>
+            
+            <div className="demo-credentials">
+              <p><strong>Demo Credentials:</strong></p>
+              <p>Username: <code>admin</code> | Password: <code>shree123</code></p>
+              <p>Username: <code>author1</code> | Password: <code>kara456</code></p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
