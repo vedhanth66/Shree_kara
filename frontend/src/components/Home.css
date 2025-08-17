@@ -382,9 +382,9 @@ body {
 }
 
 .author-login-btn:hover {
-  background: rgba(255, 216, 0, 0.1);
-  border-color: rgba(255, 216, 0, 0.6);
-  color: #FFD800;
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.6);
+  color: #FFD700;
   transform: translateY(-2px);
   box-shadow: 
     0 6px 20px rgba(255, 216, 0, 0.2),
