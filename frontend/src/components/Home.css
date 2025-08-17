@@ -459,9 +459,9 @@ body {
 }
 
 .login-modal {
-  background: linear-gradient(145deg, rgba(13, 27, 42, 0.9), rgba(0, 0, 0, 0.8));
+  background: linear-gradient(145deg, rgba(0, 0, 0, 0.9), rgba(26, 26, 26, 0.8));
   backdrop-filter: blur(25px) saturate(150%);
-  border: 1px solid rgba(255, 216, 0, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.2);
   border-radius: 20px;
   padding: 2.5rem;
   width: 90%;
@@ -469,7 +469,7 @@ body {
   position: relative;
   box-shadow: 
     0 20px 60px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 216, 0, 0.1);
+    inset 0 1px 0 rgba(255, 215, 0, 0.1);
   transform: scale(0.9) translateY(20px);
   animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
