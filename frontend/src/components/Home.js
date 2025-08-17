@@ -10,30 +10,42 @@ const Home = () => {
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState('Home');
+  const [hoveredLogo, setHoveredLogo] = useState(null);
+  const [startLogoAnimation, setStartLogoAnimation] = useState(false);
+
+  // New state to track the selected logo on touch devices
+  const [activeLogo, setActiveLogo] = useState(null);
+
+  // Check for touch device support
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   useEffect(() => {
-    // Clean up leftover transition elements on load
-    const leftovers = document.querySelectorAll(".transition-image, .transition-overlay");
-    leftovers.forEach(el => el.remove());
+    // Clean up leftover transition elements
+    document.querySelectorAll(".transition-image, .transition-overlay").forEach(el => el.remove());
 
-    // Set up video end listener
+    // Video end listener
     const currentVideoRef = videoRef.current;
     if (currentVideoRef) {
       currentVideoRef.addEventListener('ended', handleVideoEnd);
     }
 
-    // Create floating particles
+    // Floating particles
     createFloatingParticles();
 
-    // Cleanup listener on component unmount
+    // Start logo animation after 7s
+    const animationTimeout = setTimeout(() => {
+      setStartLogoAnimation(true);
+    }, 7000);
+
     return () => {
       if (currentVideoRef) {
         currentVideoRef.removeEventListener('ended', handleVideoEnd);
       }
+      clearTimeout(animationTimeout);
     };
   }, []);
 
-  // Corrected useEffect for the capsule
+  // Capsule hover logic
   useEffect(() => {
     const capsule = document.querySelector('.sidebar .hover-capsule');
     const listItems = document.querySelectorAll('.sidebar ul li');
@@ -94,7 +106,7 @@ const Home = () => {
   };
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen(prev => !prev);
   };
 
   const navigateWithTransition = (targetPath, originElement, scaleValue) => {
@@ -106,6 +118,7 @@ const Home = () => {
     const rect = img.getBoundingClientRect();
     const overlay = document.createElement("div");
     overlay.className = "transition-overlay";
+    overlay.style.opacity = "0"; // Ensure fade works
     const clone = img.cloneNode(true);
     clone.className = "transition-image";
 
@@ -122,6 +135,7 @@ const Home = () => {
       transformOrigin: "center center",
       filter: "drop-shadow(0 0 50px #FFD800)"
     });
+
     document.body.appendChild(overlay);
     document.body.appendChild(clone);
 
@@ -142,16 +156,44 @@ const Home = () => {
     }, 1200);
   };
 
-  const handleLogoClick = (elementId, path, scale) => {
+  // Unified handler for both click and touch
+  const handleLogoInteraction = (elementId, path, scale) => {
     const element = document.getElementById(elementId);
-    if (element) {
+    if (!element) return;
+
+    if (isTouchDevice) {
+      // If tapping the already active logo, navigate and hide text
+      if (activeLogo === elementId) {
+        setActiveLogo(null); // Hide the text
+        navigateWithTransition(path, element, scale);
+      } else {
+        // Otherwise, just set it as active to show the text
+        setActiveLogo(elementId);
+      }
+    } else {
+      // For desktop, click always navigates
       navigateWithTransition(path, element, scale);
     }
   };
 
-  return (
-    <div className="home-container">
+  // Handlers for desktop hover
+  const handleMouseEnter = (logoName) => {
+    if (!isTouchDevice) {
+      setHoveredLogo(logoName);
+    }
+  };
 
+  const handleMouseLeave = () => {
+    if (!isTouchDevice) {
+      setHoveredLogo(null);
+    }
+  };
+
+  // The text to display is either from hover (desktop) or active tap (mobile)
+  const displayName = hoveredLogo || activeLogo;
+
+  return (
+    <div className="home-container" onClick={() => { if (activeLogo) setActiveLogo(null); }}>
       <div className={`hamburger-menu ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
         <span />
         <span />
@@ -167,7 +209,15 @@ const Home = () => {
         </video>
       </div>
 
-      {/* --- THIS IS THE ONLY SIDEBAR --- */}
+      {displayName && (
+        <div className="logo-name-display">
+          <div className="clipboard">
+            <h1 className="typewriter">{displayName}</h1>
+          </div>
+        </div>
+      )}
+
+      {/* Sidebar */}
       <div className={`sidebar ${isMenuOpen ? 'open' : ''} ${isVideoEnded ? 'visible' : ''}`}>
         <ul>
           <div className="hover-capsule"></div>
@@ -180,7 +230,6 @@ const Home = () => {
           <li className={activeMenuItem === 'Services' ? 'active' : ''} onClick={() => setActiveMenuItem('Services')}>
             <Link to="/Dhantha">Services</Link>
           </li>
-          {/* Changed 'Contact' to 'Our Work' to match your other pages */}
           <li className={activeMenuItem === 'Our Work' ? 'active' : ''} onClick={() => setActiveMenuItem('Our Work')}>
             <Link to="/Shree">Our Work</Link>
           </li>
@@ -189,21 +238,26 @@ const Home = () => {
 
       <div className="logo_container">
         <div className="logo_wrapper">
-          <div className="logo">
-            <div id="Shree" onClick={() => handleLogoClick('Shree', '/Shree', 400)}>
-              <img src="/Shree.png" alt="Shree Logo" />
+          <div className={`logo ${startLogoAnimation ? 'animate-logos' : ''}`}>
+            <div id="Shree" className={activeLogo === 'Shree' ? 'active-glow' : ''} onClick={(e) => { e.stopPropagation(); handleLogoInteraction('Shree', '/Shree', 400); }}
+                 onMouseEnter={() => handleMouseEnter('Shree')} onMouseLeave={handleMouseLeave}>
+              <img src="/Shree.png" alt="Shree" />
             </div>
-            <div id="Eye" onClick={() => handleLogoClick('Eye', '/Eye', 200)}>
-              <img src="/Eye.png" alt="Eye Logo" />
+            <div id="Eye" className={activeLogo === 'Eye' ? 'active-glow' : ''} onClick={(e) => { e.stopPropagation(); handleLogoInteraction('Eye', '/Eye', 200); }}
+                 onMouseEnter={() => handleMouseEnter('Eye')} onMouseLeave={handleMouseLeave}>
+              <img src="/Eye.png" alt="Eye" />
             </div>
-            <div id="Dhantha" onClick={() => handleLogoClick('Dhantha', '/Dhantha', 400)}>
-              <img src="/Dhantha.png" alt="Dhantha Logo" />
+            <div id="Dhantha" className={activeLogo === 'Dhantha' ? 'active-glow' : ''} onClick={(e) => { e.stopPropagation(); handleLogoInteraction('Dhantha', '/Dhantha', 400); }}
+                 onMouseEnter={() => handleMouseEnter('Dhantha')} onMouseLeave={handleMouseLeave}>
+              <img src="/Dhantha.png" alt="Dhantha" />
             </div>
-            <div id="Kalaagruha" onClick={() => handleLogoClick('Kalaagruha', '/Kalaagruha', 2500)}>
-              <img src="/Kalaagruha.png" alt="Kalaagruha Logo" />
+            <div id="Kalaagruha" className={activeLogo === 'Kalaagruha' ? 'active-glow' : ''} onClick={(e) => { e.stopPropagation(); handleLogoInteraction('Kalaagruha', '/Kalaagruha', 2500); }}
+                 onMouseEnter={() => handleMouseEnter('Kalaagruha')} onMouseLeave={handleMouseLeave}>
+              <img src="/Kalaagruha.png" alt="Kalaagruha" />
             </div>
-            <div id="Kaara">
-              <img src="/Kaara.png" alt="Kaara Logo" />
+            <div id="Kaara" className={activeLogo === 'Kaara' ? 'active-glow' : ''} onClick={(e) => e.stopPropagation()}
+                 onMouseEnter={() => handleMouseEnter('Kaara')} onMouseLeave={handleMouseLeave}>
+              <img src="/Kaara.png" alt="Kaara" />
             </div>
           </div>
         </div>
