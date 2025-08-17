@@ -734,7 +734,7 @@ body {
     opacity: 1;
     pointer-events: auto;
     border-radius: 0;
-    background: rgba(13, 27, 42, 0.95);
+    background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(25px);
     justify-content: center;
     padding: 20px;
