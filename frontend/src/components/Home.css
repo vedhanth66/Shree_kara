@@ -620,11 +620,11 @@ body {
   position: absolute;
   width: 2px;
   height: 2px;
-  background: radial-gradient(circle, #FFD800, #FFA500);
+  background: radial-gradient(circle, #FFD700, #FFA500);
   opacity: 0.7;
   border-radius: 50%;
   animation: float3D infinite linear;
-  box-shadow: 0 0 6px rgba(255, 216, 0, 0.5);
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
 }
 
 @keyframes float3D {
