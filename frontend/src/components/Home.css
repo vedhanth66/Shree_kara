@@ -504,12 +504,12 @@ body {
 }
 
 .login-modal h2 {
-  color: #FFD800;
+  color: #FFD700;
   margin: 0 0 0.5rem;
   text-align: center;
   font-size: 1.8rem;
   font-weight: 700;
-  text-shadow: 0 0 20px rgba(255, 216, 0, 0.3);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
 }
 
 .login-subtitle {
