@@ -282,43 +282,45 @@ class BackendTester:
             self.log_test("Image Upload", False, "Connection error", str(e))
             return False
     
-    def test_video_upload(self):
-        """Test video upload endpoint"""
+    def test_music_upload(self):
+        """Test music upload endpoint"""
         if not self.token:
-            self.log_test("Video Upload", False, "No valid token available")
+            self.log_test("Music Upload", False, "No valid token available")
             return False
         
         headers = {"Authorization": f"Bearer {self.token}"}
         
-        # Create a simple base64 encoded test video data (minimal)
-        test_video_b64 = "UklGRjIAAABXRUJQVlA4ICYAAACyAgCdASoBAAEALmk0mk0iIiIiIgBoSygABc6zbAAA/v56QAAAAA=="
+        # Create a simple base64 encoded test audio data (minimal MP3 header)
+        test_music_b64 = "SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAEAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//MUZAAAAAGkAAAAAAAAA0gAAAAATEFN"
         
-        video_data = {
-            "title": "Test Video - Shree Kara Productions",
-            "description": "A sample video for Shree Kara Studios showcase",
-            "video_data": test_video_b64
+        music_data = {
+            "title": "Test Music - Shree Kara Studios",
+            "description": "A sample music track for testing",
+            "artist": "Test Artist",
+            "music_data": test_music_b64,
+            "target": "music"
         }
         
         try:
             response = requests.post(
-                f"{self.base_url}/api/upload/video",
-                json=video_data,
+                f"{self.base_url}/api/upload/music",
+                json=music_data,
                 headers=headers
             )
             
             if response.status_code == 200:
                 data = response.json()
-                if "message" in data and "video_id" in data:
-                    self.log_test("Video Upload", True, "Video uploaded successfully")
+                if "message" in data and "music_id" in data:
+                    self.log_test("Music Upload", True, "Music uploaded successfully")
                     return True
                 else:
-                    self.log_test("Video Upload", False, "Missing expected response fields", data)
+                    self.log_test("Music Upload", False, "Missing expected response fields", data)
                     return False
             else:
-                self.log_test("Video Upload", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Music Upload", False, f"HTTP {response.status_code}", response.text)
                 return False
         except Exception as e:
-            self.log_test("Video Upload", False, "Connection error", str(e))
+            self.log_test("Music Upload", False, "Connection error", str(e))
             return False
     
     def test_public_endpoints(self):
