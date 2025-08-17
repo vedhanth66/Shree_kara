@@ -318,6 +318,17 @@ async def get_profile(current_user: dict = Depends(get_current_user)):
         "role": "author"
     }
 
+@app.delete("/api/delete/music/{music_id}")
+async def delete_music(music_id: str, current_user: dict = Depends(get_current_user)):
+    result = db.music.delete_one({
+        "_id": ObjectId(music_id), 
+        "uploaded_by": current_user["username"]})
+    
+    if result.deleted_count == 1:
+        return {"message": "Music deleted successfully"}
+    else:
+        raise HTTPException(status_code=404, detail="Music not found or unauthorized")
+
 @app.delete("/api/delete/images/{image_id}")
 async def delete_image(image_id: str, current_user: dict = Depends(get_current_user)):
     result = db.images.delete_one({
