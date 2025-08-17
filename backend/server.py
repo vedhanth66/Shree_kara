@@ -186,6 +186,7 @@ async def upload_image(image: ImageUpload, current_user: dict = Depends(get_curr
         "title": image.title,
         "description": image.description,
         "image_data": image.image_data,
+        "target": image.target,
         "uploaded_by": current_user["username"],
         "uploaded_at": datetime.utcnow()
     }
