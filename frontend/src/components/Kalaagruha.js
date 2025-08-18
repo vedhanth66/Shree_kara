@@ -8,6 +8,7 @@ const Kalaagruha = () => {
   const [poems, setPoems] = useState([]);
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
+  const [music, setMusic] = useState([]);
 
   useEffect(() => {
     fetchContent();
@@ -16,15 +17,17 @@ const Kalaagruha = () => {
   const fetchContent = async () => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-      const [poemsRes, imagesRes, videosRes] = await Promise.all([
+      const [poemsRes, imagesRes, videosRes, musicRes] = await Promise.all([
         axios.get(`${backendUrl}/api/poems/kalaagruha`),
         axios.get(`${backendUrl}/api/images/kalaagruha`),
-        axios.get(`${backendUrl}/api/videos/kalaagruha`)
+        axios.get(`${backendUrl}/api/videos/kalaagruha`),
+        axios.get(`${backendUrl}/api/music/kalaagruha`)
       ]);
       
       setPoems(poemsRes.data);
       setImages(imagesRes.data);
       setVideos(videosRes.data);
+      setMusic(musicRes.data);
     } catch (error) {
       console.error('Error fetching content:', error);
     }
