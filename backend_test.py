@@ -186,7 +186,8 @@ class BackendTester:
         poem_data = {
             "title": "Test Poem - Shree Kara",
             "content": "In the realm of art and creativity,\nShree Kara Studios stands tall,\nWhere poems flow like rivers,\nAnd stories captivate all.",
-            "author": "Kara Poet"
+            "author": "Kara Poet",
+            "target": "kalaagruha"
         }
         
         try:
