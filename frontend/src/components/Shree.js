@@ -6,6 +6,8 @@ const Shree = () => {
   const navigate = useNavigate();
   const [poems, setPoems] = useState([]);
   const [images, setImages] = useState([]);
+  const [videos, setVideos] = useState([]);
+  const [music, setMusic] = useState([]);
 
   useEffect(() => {
     fetchContent();
@@ -14,13 +16,17 @@ const Shree = () => {
   const fetchContent = async () => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-      const [poemsRes, imagesRes] = await Promise.all([
+      const [poemsRes, imagesRes, videosRes, musicRes] = await Promise.all([
         axios.get(`${backendUrl}/api/poems/shree`),
-        axios.get(`${backendUrl}/api/images/shree`)
+        axios.get(`${backendUrl}/api/images/shree`),
+        axios.get(`${backendUrl}/api/videos/shree`),
+        axios.get(`${backendUrl}/api/music/shree`)
       ]);
       
       setPoems(poemsRes.data);
       setImages(imagesRes.data);
+      setVideos(videosRes.data);
+      setMusic(musicRes.data);
     } catch (error) {
       console.error('Error fetching content:', error);
     }
