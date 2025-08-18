@@ -69,6 +69,42 @@ const Dhantha = () => {
         </h1>
 
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Poems Section */}
+          {poems.length > 0 && (
+            <div style={{ marginBottom: '4rem' }}>
+              <h2 style={{ fontSize: '2rem', color: '#333', marginBottom: '1rem' }}>Creative Poetry</h2>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+                gap: '2rem'
+              }}>
+                {poems.map((poem) => (
+                  <div key={poem._id} style={{
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    borderRadius: '15px',
+                    padding: '2rem',
+                    boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)',
+                    border: '2px solid rgba(129, 92, 6, 0.3)'
+                  }}>
+                    <h3 style={{ color: '#815c06', marginBottom: '1rem' }}>{poem.title}</h3>
+                    <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '1rem' }}>by {poem.author}</p>
+                    <div style={{
+                      whiteSpace: 'pre-wrap',
+                      lineHeight: '1.6',
+                      color: '#444',
+                      marginBottom: '1rem'
+                    }}>
+                      {poem.content}
+                    </div>
+                    <p style={{ fontSize: '0.8rem', color: '#888' }}>
+                      Uploaded by: {poem.uploaded_by} | {new Date(poem.uploaded_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Images Section */}
           {images.length > 0 && (
             <div style={{ marginBottom: '4rem' }}>
