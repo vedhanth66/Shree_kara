@@ -6,6 +6,9 @@ import './Music.css';
 const Music = () => {
   const navigate = useNavigate();
   const [music, setMusic] = useState([]);
+  const [images, setImages] = useState([]);
+  const [videos, setVideos] = useState([]);
+  const [poems, setPoems] = useState([]);
   const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
 
   useEffect(() => {
@@ -15,8 +18,16 @@ const Music = () => {
   const fetchContent = async () => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-      const response = await axios.get(`${backendUrl}/api/music/music`);
-      setMusic(response.data);
+      const [musicRes, imagesRes, videosRes, poemsRes] = await Promise.all([
+        axios.get(`${backendUrl}/api/music/music`),
+        axios.get(`${backendUrl}/api/images/music`),
+        axios.get(`${backendUrl}/api/videos/music`),
+        axios.get(`${backendUrl}/api/poems/music`)
+      ]);
+      setMusic(musicRes.data);
+      setImages(imagesRes.data);
+      setVideos(videosRes.data);
+      setPoems(poemsRes.data);
     } catch (error) {
       console.error('Error fetching music:', error);
     }
