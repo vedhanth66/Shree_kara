@@ -70,8 +70,7 @@ const Music = () => {
           <p className="subtitle">Musical Compositions & Soundscapes</p>
         </div>
 
-        {/* Music Content */}
-        <div className="music-grid">
+        <div className="music-content">
           {/* Poems Section */}
           {poems.length > 0 && (
             <div style={{ marginBottom: '3rem', width: '100%' }}>
@@ -181,56 +180,69 @@ const Music = () => {
             </div>
           )}
 
-          {/* Music Content */}
-        <div className="music-grid">
-          {music.length > 0 ? (
-            music.map((track) => (
-              <div key={track._id} className="music-card">
-                <div className="music-info">
-                  <h3 className="track-title">{track.title}</h3>
-                  {track.artist && (
-                    <p className="track-artist">by {track.artist}</p>
-                  )}
-                  {track.description && (
-                    <p className="track-description">{track.description}</p>
-                  )}
-                </div>
+          {/* Music Tracks Section */}
+          <div className="music-grid">
+            {music.length > 0 ? (
+              <div style={{ marginBottom: '3rem', width: '100%' }}>
+                <h2 style={{ fontSize: '2rem', color: '#FFD700', marginBottom: '2rem', textAlign: 'center' }}>Music Tracks</h2>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+                  gap: '2rem'
+                }}>
+                  {music.map((track) => (
+                    <div key={track._id} className="music-card">
+                      <div className="music-info">
+                        <h3 className="track-title">{track.title}</h3>
+                        {track.artist && (
+                          <p className="track-artist">by {track.artist}</p>
+                        )}
+                        {track.description && (
+                          <p className="track-description">{track.description}</p>
+                        )}
+                      </div>
 
-                <div className="music-player">
-                  <audio
-                    id={`audio-${track._id}`}
-                    src={`data:audio/mpeg;base64,${track.music_data}`}
-                    onEnded={() => setCurrentlyPlaying(null)}
-                  />
-                  <button
-                    className="play-btn"
-                    onClick={() => handlePlayPause(document.getElementById(`audio-${track._id}`), track._id)}
-                  >
-                    {currentlyPlaying === track._id ? (
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                      </svg>
-                    ) : (
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                    )}
-                  </button>
-                </div>
+                      <div className="music-player">
+                        <audio
+                          id={`audio-${track._id}`}
+                          src={`data:audio/mpeg;base64,${track.music_data}`}
+                          onEnded={() => setCurrentlyPlaying(null)}
+                        />
+                        <button
+                          className="play-btn"
+                          onClick={() => handlePlayPause(document.getElementById(`audio-${track._id}`), track._id)}
+                        >
+                          {currentlyPlaying === track._id ? (
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                            </svg>
+                          ) : (
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M8 5v14l11-7z"/>
+                            </svg>
+                          )}
+                        </button>
+                      </div>
 
-                <div className="track-metadata">
-                  <span>Uploaded by: {track.uploaded_by}</span>
-                  <span>{new Date(track.uploaded_at).toLocaleDateString()}</span>
+                      <div className="track-metadata">
+                        <span>Uploaded by: {track.uploaded_by}</span>
+                        <span>{new Date(track.uploaded_at).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))
-          ) : (
+            ) : null}
+          </div>
+
+          {/* Empty State - only show when ALL content types are empty */}
+          {poems.length === 0 && images.length === 0 && videos.length === 0 && music.length === 0 && (
             <div className="empty-state">
               <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" opacity="0.3">
                 <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
               </svg>
-              <h3>No Music Yet</h3>
-              <p>Musical compositions will appear here when uploaded!</p>
+              <h3>No Music Content Yet</h3>
+              <p>Musical compositions, videos, images and poetry will appear here when uploaded!</p>
             </div>
           )}
         </div>
