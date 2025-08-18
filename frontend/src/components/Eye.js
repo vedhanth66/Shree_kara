@@ -69,6 +69,41 @@ const Eye = () => {
         </h1>
 
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Poems Section */}
+          {poems.length > 0 && (
+            <div style={{ marginBottom: '4rem' }}>
+              <h2 style={{ fontSize: '2rem', color: '#333', marginBottom: '1rem' }}>Poetry</h2>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+                gap: '2rem'
+              }}>
+                {poems.map((poem) => (
+                  <div key={poem._id} style={{
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    borderRadius: '10px',
+                    padding: '2rem',
+                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                  }}>
+                    <h3 style={{ color: '#333', marginBottom: '0.5rem' }}>{poem.title}</h3>
+                    <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '1rem' }}>by {poem.author}</p>
+                    <div style={{
+                      whiteSpace: 'pre-wrap',
+                      lineHeight: '1.6',
+                      color: '#444',
+                      marginBottom: '1rem'
+                    }}>
+                      {poem.content}
+                    </div>
+                    <p style={{ fontSize: '0.8rem', color: '#888' }}>
+                      Uploaded by: {poem.uploaded_by} | {new Date(poem.uploaded_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Videos Section */}
           {videos.length > 0 && (
             <div style={{ marginBottom: '4rem' }}>
