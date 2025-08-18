@@ -118,8 +118,35 @@ const Kalaagruha = () => {
             </div>
           )}
 
+          {/* Music Section */}
+          {music.length > 0 && (
+            <div className="content-section">
+              <h2 className="section-title">Music</h2>
+              <div className="items-grid">
+                {music.map((track) => (
+                  <div key={track._id} className="content-card music-card">
+                    <h3 className="item-title">{track.title}</h3>
+                    {track.artist && (
+                      <p className="track-artist">by {track.artist}</p>
+                    )}
+                    <div className="music-container">
+                      <audio 
+                        controls 
+                        className="content-audio"
+                        src={`data:audio/mpeg;base64,${track.music_data}`} 
+                      />
+                    </div>
+                    {track.description && (
+                      <p className="item-description">{track.description}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Empty State */}
-          {poems.length === 0 && images.length === 0 && videos.length === 0 && (
+          {poems.length === 0 && images.length === 0 && videos.length === 0 && music.length === 0 && (
             <div className="empty-state">
               <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" opacity="0.3">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
