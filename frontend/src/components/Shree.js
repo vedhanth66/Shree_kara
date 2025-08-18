@@ -151,8 +151,81 @@ const Shree = () => {
             </div>
           )}
 
+          {/* Videos Section */}
+          {videos.length > 0 && (
+            <div style={{ marginBottom: '4rem' }}>
+              <h2 style={{ fontSize: '2rem', color: '#FFD800', marginBottom: '2rem' }}>Video Poetry</h2>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+                gap: '2rem'
+              }}>
+                {videos.map((video) => (
+                  <div key={video._id} style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    borderRadius: '15px',
+                    padding: '1rem',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 216, 0, 0.3)'
+                  }}>
+                    <h3 style={{ color: '#FFD800', marginBottom: '1rem' }}>{video.title}</h3>
+                    {video.description && (
+                      <p style={{ color: '#ccc', marginBottom: '1rem' }}>{video.description}</p>
+                    )}
+                    <video
+                      controls
+                      style={{ width: '100%', borderRadius: '10px' }}
+                      src={`data:video/mp4;base64,${video.video_data}`}
+                    />
+                    <p style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.5rem' }}>
+                      Uploaded by: {video.uploaded_by} | {new Date(video.uploaded_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Music Section */}
+          {music.length > 0 && (
+            <div style={{ marginBottom: '4rem' }}>
+              <h2 style={{ fontSize: '2rem', color: '#FFD800', marginBottom: '2rem' }}>Musical Poetry</h2>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+                gap: '2rem'
+              }}>
+                {music.map((track) => (
+                  <div key={track._id} style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    borderRadius: '15px',
+                    padding: '2rem',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 216, 0, 0.3)'
+                  }}>
+                    <h3 style={{ color: '#FFD800', marginBottom: '1rem' }}>{track.title}</h3>
+                    {track.artist && (
+                      <p style={{ color: '#ccc', marginBottom: '0.5rem' }}>by {track.artist}</p>
+                    )}
+                    {track.description && (
+                      <p style={{ color: '#ccc', marginBottom: '1rem' }}>{track.description}</p>
+                    )}
+                    <audio
+                      controls
+                      style={{ width: '100%', marginBottom: '1rem' }}
+                      src={`data:audio/mpeg;base64,${track.music_data}`}
+                    />
+                    <p style={{ fontSize: '0.8rem', color: '#888' }}>
+                      Uploaded by: {track.uploaded_by} | {new Date(track.uploaded_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* No Content Message */}
-          {poems.length === 0 && images.length === 0 && (
+          {poems.length === 0 && images.length === 0 && videos.length === 0 && music.length === 0 && (
             <div style={{
               background: 'rgba(255, 255, 255, 0.1)',
               borderRadius: '15px',
