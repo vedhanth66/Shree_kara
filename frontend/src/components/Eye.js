@@ -172,8 +172,45 @@ const Eye = () => {
             </div>
           )}
 
+          {/* Music Section */}
+          {music.length > 0 && (
+            <div style={{ marginBottom: '4rem' }}>
+              <h2 style={{ fontSize: '2rem', color: '#333', marginBottom: '1rem' }}>Music</h2>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '2rem'
+              }}>
+                {music.map((track) => (
+                  <div key={track._id} style={{
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    borderRadius: '10px',
+                    padding: '1rem',
+                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                  }}>
+                    <h3 style={{ color: '#333', marginBottom: '0.5rem' }}>{track.title}</h3>
+                    {track.artist && (
+                      <p style={{ color: '#666', marginBottom: '0.5rem' }}>by {track.artist}</p>
+                    )}
+                    {track.description && (
+                      <p style={{ color: '#666', marginBottom: '1rem' }}>{track.description}</p>
+                    )}
+                    <audio
+                      controls
+                      style={{ width: '100%', marginBottom: '1rem' }}
+                      src={`data:audio/mpeg;base64,${track.music_data}`}
+                    />
+                    <p style={{ fontSize: '0.8rem', color: '#888' }}>
+                      Uploaded by: {track.uploaded_by} | {new Date(track.uploaded_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* No Content Message */}
-          {images.length === 0 && videos.length === 0 && (
+          {images.length === 0 && videos.length === 0 && poems.length === 0 && music.length === 0 && (
             <div style={{
               background: 'rgba(255, 255, 255, 0.9)',
               borderRadius: '10px',
