@@ -452,7 +452,10 @@ const Author = () => {
               <h3>Poems</h3>
               {content.poems.map(item => (
                 <div key={item._id} className="content-item">
-                  <span>{item.title}</span>
+                  <div className="content-info">
+                    <span className="content-title">{item.title}</span>
+                    <span className="content-target">Target: {item.target}</span>
+                  </div>
                   <button onClick={() => deleteContent('poem', item._id)} className="delete-btn">Delete</button>
                 </div>
               ))}
@@ -464,7 +467,10 @@ const Author = () => {
               <h3>Images</h3>
               {content.images.map(item => (
                 <div key={item._id} className="content-item">
-                  <span>{item.title}</span>
+                  <div className="content-info">
+                    <span className="content-title">{item.title}</span>
+                    <span className="content-target">Target: {item.target}</span>
+                  </div>
                   <button onClick={() => deleteContent('image', item._id)} className="delete-btn">Delete</button>
                 </div>
               ))}
@@ -476,7 +482,10 @@ const Author = () => {
               <h3>Videos</h3>
               {content.videos.map(item => (
                 <div key={item._id} className="content-item">
-                  <span>{item.title}</span>
+                  <div className="content-info">
+                    <span className="content-title">{item.title}</span>
+                    <span className="content-target">Target: {item.target}</span>
+                  </div>
                   <button onClick={() => deleteContent('video', item._id)} className="delete-btn">Delete</button>
                 </div>
               ))}
@@ -488,7 +497,10 @@ const Author = () => {
               <h3>Music</h3>
               {content.music.map(item => (
                 <div key={item._id} className="content-item">
-                  <span>{item.title}</span>
+                  <div className="content-info">
+                    <span className="content-title">{item.title}</span>
+                    <span className="content-target">Target: {item.target}</span>
+                  </div>
                   <button onClick={() => deleteContent('music', item._id)} className="delete-btn">Delete</button>
                 </div>
               ))}
