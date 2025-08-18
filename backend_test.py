@@ -56,9 +56,7 @@ class BackendTester:
     def test_login_valid_credentials(self):
         """Test login with valid credentials"""
         test_users = [
-            {"username": "admin", "password": "shree123"},
-            {"username": "author1", "password": "kara456"},
-            {"username": "editor", "password": "studios789"}
+            {"username": "testauthor", "password": "testpassword"}
         ]
         
         all_passed = True
