@@ -6,6 +6,8 @@ const Eye = () => {
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
+  const [poems, setPoems] = useState([]);
+  const [music, setMusic] = useState([]);
 
   useEffect(() => {
     fetchContent();
@@ -14,13 +16,17 @@ const Eye = () => {
   const fetchContent = async () => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-      const [imagesRes, videosRes] = await Promise.all([
+      const [imagesRes, videosRes, poemsRes, musicRes] = await Promise.all([
         axios.get(`${backendUrl}/api/images/eye`),
         axios.get(`${backendUrl}/api/videos/eye`),
+        axios.get(`${backendUrl}/api/poems/eye`),
+        axios.get(`${backendUrl}/api/music/eye`),
       ]);
       
       setImages(imagesRes.data);
       setVideos(videosRes.data);
+      setPoems(poemsRes.data);
+      setMusic(musicRes.data);
     } catch (error) {
       console.error('Error fetching content:', error);
     }
