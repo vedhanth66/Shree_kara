@@ -257,7 +257,8 @@ class BackendTester:
         image_data = {
             "title": "Test Image - Shree Kara Gallery",
             "description": "A beautiful test image for Shree Kara Studios gallery",
-            "image_data": test_image_b64
+            "image_data": test_image_b64,
+            "target": "shree"
         }
         
         try:
