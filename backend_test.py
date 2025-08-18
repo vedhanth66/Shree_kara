@@ -361,7 +361,108 @@ class BackendTester:
             self.log_test("Music Upload", False, "Connection error", str(e))
             return False
     
-    def test_public_endpoints(self):
+    def test_target_based_content_filtering(self):
+        """Test target-based content filtering endpoints"""
+        targets = ["eye", "shree", "dhantha", "kalaagruha", "music"]
+        content_types = ["poems", "images", "videos", "music"]
+        
+        all_passed = True
+        for target in targets:
+            for content_type in content_types:
+                try:
+                    response = requests.get(f"{self.base_url}/api/{content_type}/{target}")
+                    
+                    if response.status_code == 200:
+                        data = response.json()
+                        if isinstance(data, list):
+                            self.log_test(f"Target Filter ({content_type}/{target})", True, f"Returns list with {len(data)} items")
+                        else:
+                            self.log_test(f"Target Filter ({content_type}/{target})", False, "Expected list response", type(data))
+                            all_passed = False
+                    else:
+                        self.log_test(f"Target Filter ({content_type}/{target})", False, f"HTTP {response.status_code}", response.text)
+                        all_passed = False
+                except Exception as e:
+                    self.log_test(f"Target Filter ({content_type}/{target})", False, "Connection error", str(e))
+                    all_passed = False
+        
+        return all_passed
+
+    def test_poem_upload_with_target(self):
+        """Test poem upload with target specification"""
+        if not self.token:
+            self.log_test("Poem Upload with Target", False, "No valid token available")
+            return False
+        
+        headers = {"Authorization": f"Bearer {self.token}"}
+        poem_data = {
+            "title": "Test Poem for Eye Section",
+            "content": "This is a test poem specifically for the Eye section\nTo verify target-based content filtering works correctly.",
+            "author": "Test Author",
+            "target": "eye"
+        }
+        
+        try:
+            response = requests.post(
+                f"{self.base_url}/api/upload/poem",
+                json=poem_data,
+                headers=headers
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "message" in data and "poem_id" in data:
+                    self.log_test("Poem Upload with Target", True, "Poem uploaded successfully with target")
+                    return True
+                else:
+                    self.log_test("Poem Upload with Target", False, "Missing expected response fields", data)
+                    return False
+            else:
+                self.log_test("Poem Upload with Target", False, f"HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Poem Upload with Target", False, "Connection error", str(e))
+            return False
+
+    def test_image_upload_with_target(self):
+        """Test image upload with target specification"""
+        if not self.token:
+            self.log_test("Image Upload with Target", False, "No valid token available")
+            return False
+        
+        headers = {"Authorization": f"Bearer {self.token}"}
+        
+        # Create a simple base64 encoded test image (1x1 pixel PNG)
+        test_image_b64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+        
+        image_data = {
+            "title": "Test Image for Dhantha Section",
+            "description": "A test image specifically for the Dhantha section",
+            "image_data": test_image_b64,
+            "target": "dhantha"
+        }
+        
+        try:
+            response = requests.post(
+                f"{self.base_url}/api/upload/image",
+                json=image_data,
+                headers=headers
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "message" in data and "image_id" in data:
+                    self.log_test("Image Upload with Target", True, "Image uploaded successfully with target")
+                    return True
+                else:
+                    self.log_test("Image Upload with Target", False, "Missing expected response fields", data)
+                    return False
+            else:
+                self.log_test("Image Upload with Target", False, f"HTTP {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Image Upload with Target", False, "Connection error", str(e))
+            return False
         """Test public content retrieval endpoints"""
         public_endpoints = [
             "/api/poems",
