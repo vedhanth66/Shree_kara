@@ -6,14 +6,13 @@ import axios from 'axios';
 const Home = () => {
   const navigate = useNavigate();
   const videoRef = useRef(null);
-  const [isVideoEnded, setIsVideoEnded] = useState(() => {
-    return sessionStorage.getItem("introVidShown") === "true";
-  });
+  // Default to true (video ended) to prevent flashes, useEffect will correct it.
+  const [isVideoEnded, setIsVideoEnded] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState('Home');
   const [hoveredLogo, setHoveredLogo] = useState(null);
   const [startLogoAnimation, setStartLogoAnimation] = useState(false);
-  
+
   // Author login states
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -28,6 +27,19 @@ const Home = () => {
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   useEffect(() => {
+    // --- Logic to determine if video should play ---
+    const navEntries = performance.getEntriesByType('navigation');
+    const navType = navEntries.length > 0 ? navEntries[0].type : '';
+    const hasVisitedInSession = sessionStorage.getItem('hasVisitedHomePage');
+
+    // Play video on first visit in a session OR on reload.
+    if (navType === 'reload' || !hasVisitedInSession) {
+      sessionStorage.setItem('hasVisitedHomePage', 'true');
+      setIsVideoEnded(false); // Play the video
+    } else {
+      setIsVideoEnded(true); // Skip the video
+    }
+
     // Clean up leftover transition elements
     document.querySelectorAll(".transition-image, .transition-overlay").forEach(el => el.remove());
 
@@ -117,7 +129,6 @@ const Home = () => {
   };
 
   const handleVideoEnd = () => {
-    sessionStorage.setItem("introVidShown", "true");
     setIsVideoEnded(true);
   };
 
@@ -392,7 +403,7 @@ const Home = () => {
       </div>
 
       <div className="logo_container">
-        <div className="logo_wrapper">
+        <div className={`logo_wrapper ${isVideoEnded ? 'animate-resize-mobile animate-resize-tablet' : ''}`}>
           <div className={`logo ${startLogoAnimation ? 'animate-logos' : ''}`}>
             <div id="Shree" className={activeLogo === 'Shree' ? 'active-glow' : ''} onClick={(e) => { e.stopPropagation(); handleLogoInteraction('Shree', '/Shree', 400); }}
                  onMouseEnter={() => handleMouseEnter('Shree')} onMouseLeave={handleMouseLeave}>

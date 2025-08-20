@@ -68,7 +68,7 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: radial-gradient(ellipse at center, #1a1a2e 0%, #000000 100%);
+  background: #000000; 
   z-index: 10000;
   pointer-events: none;
   display: flex;
@@ -101,7 +101,7 @@ body {
 }
 
 .logo_wrapper {
-  width: 26%;
+  width: 27.5%;
   aspect-ratio: 942 / 768;
   position: relative;
   margin: auto;
@@ -648,7 +648,7 @@ body {
   transform: translateX(-50%);
   z-index: 12000;
   color: #FFD700;
-  font-size: 1.4rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-shadow: 
     0 0 20px rgba(255, 215, 0, 0.6),
@@ -671,11 +671,11 @@ body {
 .clipboard {
   display: inline-block;
   position: relative;
-  padding: 12px 24px;
+  padding: 2px 20px;
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 215, 0, 0.3);
-  border-radius: 15px;
+  border-radius: 30px;
   overflow: hidden;
   animation: clipboardGlow 2s ease-in-out infinite alternate;
 }
@@ -701,10 +701,37 @@ body {
   to { width: 100%; }
 }
 
+@keyframes resizeLogoTablet {
+  from {
+    width: 26%;
+  }
+  to {
+    width: 45%;
+  }
+}
+
+@keyframes resizeLogoMobile {
+  from {
+    width: 27.5%;
+  }
+  to {
+    width: 40%;
+  }
+}
+
+
 /* --- Enhanced Responsive Design --- */
 @media (max-width: 1024px) {
   .hamburger-menu {
     display: flex;
+    top: 40px;
+    left: 40px;
+    width: 35px;
+    height: 25px;
+  }
+
+  .logo_wrapper.animate-resize-tablet {
+    animation: resizeLogoTablet 1s ease-in-out 0.5s forwards;
   }
 
   .sidebar {
@@ -733,8 +760,8 @@ body {
   }
 
   .author-login-container {
-    top: 20px;
-    right: 20px;
+    top: 40px;
+    right: 40px;
   }
 
   .login-modal {
@@ -743,15 +770,27 @@ body {
   }
 }
 
-@media (max-width: 450px) {
-  .sidebar {
-    width: 280px;
+@media (max-width: 450px){
+  .hamburger-menu {
+    top: 25px;
+    left: 20px;
+    width: 30px;
+    height: 22px;
   }
 
   .logo_wrapper {
-    width: 35%;
+    width: 27.5%;
+  }
+  
+  .logo_wrapper.animate-resize-mobile {
+    animation: resizeLogoMobile 1s ease-in-out 0.5s forwards;
   }
 
+  .author-login-container {
+    top: 20px;
+    right: 20px;
+  }
+  
   .author-login-btn {
     padding: 8px 12px;
     font-size: 13px;
@@ -765,6 +804,7 @@ body {
     font-size: 1.5rem;
   }
 }
+
 
 /* --- Notification Styles --- */
 .notification {
