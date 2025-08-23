@@ -1,18 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ContactUs.css';
 
 const ContactUs = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState('');
 
   const contactInfo = [
     {
@@ -41,35 +32,6 @@ const ContactUs = () => {
     }
   ];
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setSubmitMessage('Thank you for reaching out! We\'ll get back to you within 24 hours.');
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
-      });
-      setIsSubmitting(false);
-      
-      // Clear message after 5 seconds
-      setTimeout(() => setSubmitMessage(''), 5000);
-    }, 2000);
-  };
-
   const goBack = () => {
     navigate('/');
   };
@@ -91,130 +53,55 @@ const ContactUs = () => {
           <div className="title-underline"></div>
         </div>
 
-        {/* Main Content */}
-        <div className="contact-main">
-          {/* Contact Information */}
-          <div className="contact-info-section">
-            <h2 className="section-title">Contact Information</h2>
-            <div className="contact-info-grid">
-              {contactInfo.map((info, index) => (
-                <div key={index} className="contact-info-card">
-                  <div className="info-icon">
-                    <span>{info.icon}</span>
-                  </div>
-                  <div className="info-content">
-                    <h3 className="info-title">{info.title}</h3>
-                    <div className="info-details">
-                      {info.details.map((detail, idx) => (
-                        <p key={idx} className="info-detail">{detail}</p>
-                      ))}
-                    </div>
-                    <p className="info-description">{info.description}</p>
-                  </div>
+        {/* Contact Information */}
+        <div className="contact-info-section">
+          <h2 className="section-title">Contact Information</h2>
+          <div className="contact-info-grid">
+            {contactInfo.map((info, index) => (
+              <div key={index} className="contact-info-card">
+                <div className="info-icon">
+                  <span>{info.icon}</span>
                 </div>
-              ))}
-            </div>
+                <div className="info-content">
+                  <h3 className="info-title">{info.title}</h3>
+                  <div className="info-details">
+                    {info.details.map((detail, idx) => (
+                      <p key={idx} className="info-detail">{detail}</p>
+                    ))}
+                  </div>
+                  <p className="info-description">{info.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
+        </div>
 
-          {/* Contact Form */}
-          <div className="contact-form-section">
-            <h2 className="section-title">Send Us a Message</h2>
-            <form className="contact-form" onSubmit={handleSubmit}>
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="name">Full Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="Enter your full name"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="email">Email Address</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="Enter your email"
-                  />
-                </div>
+        {/* Additional Contact Message */}
+        <div className="contact-message">
+          <div className="message-card">
+            <h3 className="message-title">Ready to Start Your Project?</h3>
+            <p className="message-text">
+              We'd love to hear about your creative vision and discuss how we can bring it to life. 
+              Reach out to us through any of the contact methods above, and let's create something extraordinary together.
+            </p>
+            <div className="message-features">
+              <div className="feature-item">
+                <span className="feature-icon">🎬</span>
+                <span>Professional Cinematography</span>
               </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="phone">Phone Number</label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    placeholder="Enter your phone number"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="subject">Subject</label>
-                  <select
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    required
-                  >
-                    <option value="">Select a service</option>
-                    <option value="Cinematography">Cinematography</option>
-                    <option value="Music Production">Music Production</option>
-                    <option value="Content Writing">Content Writing</option>
-                    <option value="Direction">Direction</option>
-                    <option value="Video Production">Video Production</option>
-                    <option value="Creative Consulting">Creative Consulting</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
+              <div className="feature-item">
+                <span className="feature-icon">🎵</span>
+                <span>Original Music Composition</span>
               </div>
-
-              <div className="form-group full-width">
-                <label htmlFor="message">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  rows="6"
-                  placeholder="Tell us about your project or inquiry..."
-                ></textarea>
+              <div className="feature-item">
+                <span className="feature-icon">✍️</span>
+                <span>Creative Writing & Scripts</span>
               </div>
-
-              <button
-                type="submit"
-                className={`submit-btn ${isSubmitting ? 'submitting' : ''}`}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="spinner"></div>
-                    Sending...
-                  </>
-                ) : (
-                  'Send Message'
-                )}
-              </button>
-            </form>
-
-            {submitMessage && (
-              <div className="submit-message">
-                <div className="message-icon">✅</div>
-                <p>{submitMessage}</p>
+              <div className="feature-item">
+                <span className="feature-icon">🎭</span>
+                <span>Direction & Performance</span>
               </div>
-            )}
+            </div>
           </div>
         </div>
 

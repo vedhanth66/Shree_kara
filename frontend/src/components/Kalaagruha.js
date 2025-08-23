@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Kalaagruha.css';
@@ -9,6 +9,12 @@ const Kalaagruha = () => {
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
   const [music, setMusic] = useState([]);
+  const [activeCategory, setActiveCategory] = useState('all');
+  
+  const poemsRef = useRef(null);
+  const imagesRef = useRef(null);
+  const videosRef = useRef(null);
+  const musicRef = useRef(null);
 
   useEffect(() => {
     fetchContent();
@@ -37,6 +43,31 @@ const Kalaagruha = () => {
     navigate('/');
   };
 
+  const scrollToSection = (section) => {
+    setActiveCategory(section);
+    
+    const refs = {
+      poems: poemsRef,
+      images: imagesRef,
+      videos: videosRef,
+      music: musicRef
+    };
+    
+    if (refs[section] && refs[section].current) {
+      refs[section].current.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
+  const categories = [
+    { id: 'poems', label: 'Poems', count: poems.length, icon: '📝' },
+    { id: 'images', label: 'Images', count: images.length, icon: '🖼️' },
+    { id: 'videos', label: 'Videos', count: videos.length, icon: '🎥' },
+    { id: 'music', label: 'Music', count: music.length, icon: '🎵' }
+  ];
+
   return (
     <div className="kalaagruha-container">
       <button className="back-btn" onClick={goBack}>
@@ -52,11 +83,29 @@ const Kalaagruha = () => {
           <p className="subtitle">Creative Content Gallery</p>
         </div>
 
+        {/* Category Navigation */}
+        <div className="category-navigation">
+          <h3 className="nav-title">Explore Categories</h3>
+          <div className="category-buttons">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                className={`category-btn ${activeCategory === category.id ? 'active' : ''}`}
+                onClick={() => scrollToSection(category.id)}
+              >
+                <span className="category-icon">{category.icon}</span>
+                <span className="category-label">{category.label}</span>
+                <span className="category-count">({category.count})</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Content Display */}
         <div className="content-grid">
           {/* Poems Section */}
           {poems.length > 0 && (
-            <div className="content-section">
+            <div ref={poemsRef} className="content-section" id="poems">
               <h2 className="section-title">Poems</h2>
               <div className="items-grid">
                 {poems.map((poem) => (
@@ -72,7 +121,7 @@ const Kalaagruha = () => {
 
           {/* Images Section */}
           {images.length > 0 && (
-            <div className="content-section">
+            <div ref={imagesRef} className="content-section" id="images">
               <h2 className="section-title">Images</h2>
               <div className="items-grid">
                 {images.map((image) => (
@@ -96,7 +145,7 @@ const Kalaagruha = () => {
 
           {/* Videos Section */}
           {videos.length > 0 && (
-            <div className="content-section">
+            <div ref={videosRef} className="content-section" id="videos">
               <h2 className="section-title">Videos</h2>
               <div className="items-grid">
                 {videos.map((video) => (
@@ -120,7 +169,7 @@ const Kalaagruha = () => {
 
           {/* Music Section */}
           {music.length > 0 && (
-            <div className="content-section">
+            <div ref={musicRef} className="content-section" id="music">
               <h2 className="section-title">Music</h2>
               <div className="items-grid">
                 {music.map((track) => (
