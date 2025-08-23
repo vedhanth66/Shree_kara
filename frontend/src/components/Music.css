@@ -18,7 +18,7 @@
   backdrop-filter: blur(15px) saturate(180%);
   border: 1px solid rgba(255, 215, 0, 0.3);
   border-radius: 25px;
-  color: rgba(255, 255, 255, 0.9);
+  color: #a7a7a7b3;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -67,7 +67,7 @@
 
 .subtitle {
   font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: #a7a7a7b3;
   margin: 0 0 2rem;
   font-weight: 400;
 }
@@ -132,14 +132,14 @@
 }
 
 .track-artist {
-  color: rgba(255, 255, 255, 0.8);
+  color: #a7a7a7b3;
   font-size: 1rem;
   margin: 0 0 1rem;
   font-style: italic;
 }
 
 .track-description {
-  color: rgba(255, 255, 255, 0.7);
+  color: #a7a7a7b3;
   font-size: 0.9rem;
   line-height: 1.6;
   margin: 0;
@@ -193,7 +193,7 @@
   padding-top: 1rem;
   border-top: 1px solid rgba(255, 215, 0, 0.1);
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: #a7a7a7b3;
 }
 
 /* Empty State */

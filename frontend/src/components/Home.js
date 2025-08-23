@@ -387,17 +387,14 @@ const Home = () => {
           <li className={activeMenuItem === 'Home' ? 'active' : ''} onClick={() => setActiveMenuItem('Home')}>
             <Link to="/">Home</Link>
           </li>
-          <li className={activeMenuItem === 'About us' ? 'active' : ''} onClick={() => setActiveMenuItem('About us')}>
-            <Link to="/Eye">About us</Link>
+          <li className={activeMenuItem === 'About Us' ? 'active' : ''} onClick={() => setActiveMenuItem('About Us')}>
+            <Link to="/about">About Us</Link>
           </li>
           <li className={activeMenuItem === 'Services' ? 'active' : ''} onClick={() => setActiveMenuItem('Services')}>
-            <Link to="/Dhantha">Services</Link>
+            <Link to="/services">Services</Link>
           </li>
-          <li className={activeMenuItem === 'Our Work' ? 'active' : ''} onClick={() => setActiveMenuItem('Our Work')}>
-            <Link to="/Shree">Our Work</Link>
-          </li>
-          <li className={activeMenuItem === 'Gallery' ? 'active' : ''} onClick={() => setActiveMenuItem('Gallery')}>
-            <Link to="/Kalaagruha">Gallery</Link>
+          <li className={activeMenuItem === 'Contact Us' ? 'active' : ''} onClick={() => setActiveMenuItem('Contact Us')}>
+            <Link to="/contact">Contact Us</Link>
           </li>
         </ul>
       </div>

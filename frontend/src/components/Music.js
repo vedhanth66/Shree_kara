@@ -87,7 +87,7 @@ const Music = () => {
                     border: '1px solid rgba(255, 215, 0, 0.2)',
                     borderRadius: '15px',
                     padding: '2rem',
-                    color: 'white'
+                    color: '#a7a7a7b3'
                   }}>
                     <h3 style={{ color: '#FFD700', marginBottom: '1rem' }}>{poem.title}</h3>
                     <p style={{ color: '#ccc', fontSize: '0.9rem', marginBottom: '1rem' }}>by {poem.author}</p>
@@ -124,7 +124,7 @@ const Music = () => {
                     border: '1px solid rgba(255, 215, 0, 0.2)',
                     borderRadius: '15px',
                     padding: '1rem',
-                    color: 'white'
+                    color: '#a7a7a7b3'
                   }}>
                     <h3 style={{ color: '#FFD700', marginBottom: '1rem' }}>{image.title}</h3>
                     {image.description && (
@@ -160,7 +160,7 @@ const Music = () => {
                     border: '1px solid rgba(255, 215, 0, 0.2)',
                     borderRadius: '15px',
                     padding: '1rem',
-                    color: 'white'
+                    color: '#a7a7a7b3'
                   }}>
                     <h3 style={{ color: '#FFD700', marginBottom: '1rem' }}>{video.title}</h3>
                     {video.description && (

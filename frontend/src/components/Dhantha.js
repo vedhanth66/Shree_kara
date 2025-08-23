@@ -51,7 +51,7 @@ const Dhantha = () => {
           top: '20px',
           left: '20px',
           background: 'rgba(0, 0, 0, 0.7)',
-          color: 'white',
+          color: '#a7a7a7b3',
           border: 'none',
           padding: '10px 20px',
           borderRadius: '25px',
@@ -80,7 +80,7 @@ const Dhantha = () => {
               }}>
                 {poems.map((poem) => (
                   <div key={poem._id} style={{
-                    background: 'rgba(255, 255, 255, 0.9)',
+                    background: '#a7a7a7b3',
                     borderRadius: '15px',
                     padding: '2rem',
                     boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)',
@@ -116,7 +116,7 @@ const Dhantha = () => {
               }}>
                 {images.map((image) => (
                   <div key={image._id} style={{
-                    background: 'rgba(255, 255, 255, 0.9)',
+                    background: '#a7a7a7b3',
                     borderRadius: '15px',
                     padding: '1rem',
                     boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)',
@@ -151,7 +151,7 @@ const Dhantha = () => {
               }}>
                 {videos.map((video) => (
                   <div key={video._id} style={{
-                    background: 'rgba(255, 255, 255, 0.9)',
+                    background: '#a7a7a7b3',
                     borderRadius: '15px',
                     padding: '1rem',
                     boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)',
@@ -186,7 +186,7 @@ const Dhantha = () => {
               }}>
                 {music.map((track) => (
                   <div key={track._id} style={{
-                    background: 'rgba(255, 255, 255, 0.9)',
+                    background: '#a7a7a7b3',
                     borderRadius: '15px',
                     padding: '2rem',
                     boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)',
@@ -216,7 +216,7 @@ const Dhantha = () => {
           {/* No Content Message */}
           {images.length === 0 && videos.length === 0 && poems.length === 0 && music.length === 0 && (
             <div style={{
-              background: 'rgba(255, 255, 255, 0.9)',
+              background: '#a7a7a7b3',
               borderRadius: '15px',
               padding: '3rem',
               textAlign: 'center',

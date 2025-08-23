@@ -1,0 +1,414 @@
+.about-us-container {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at bottom, #1a1a1a 0%, #000000 100%);
+  position: relative;
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+.back-btn-about {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(15px) saturate(180%);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 25px;
+  color: rgba(248, 248, 255, 0.9);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  z-index: 2000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.back-btn-about:hover {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.6);
+  color: #FFD700;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.2);
+}
+
+.about-content {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  transition: all 0.4s ease;
+}
+
+.main-logo {
+  width: 200px;
+  height: auto;
+  filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.6)) brightness(1.2);
+  transition: all 0.4s ease;
+}
+
+.logo-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: pulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+  100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.1; }
+}
+
+.founders-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.founder-card {
+  position: absolute;
+  width: 280px;
+  height: 400px;
+  cursor: pointer;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.6;
+  filter: blur(2px) brightness(0.7);
+  transform-style: preserve-3d;
+}
+
+.founder-card.active {
+  opacity: 1;
+  filter: blur(0) brightness(1.2);
+  transform: scale(1.05) translateZ(50px);
+  z-index: 200;
+}
+
+.founder-card.dimmed {
+  opacity: 0.3;
+  filter: blur(3px) brightness(0.5);
+}
+
+/* Positioning for each founder */
+.founder-card.left-1 {
+  top: 20%;
+  left: 5%;
+  transform: rotate(-5deg);
+}
+
+.founder-card.left-2 {
+  top: 60%;
+  left: 8%;
+  transform: rotate(3deg);
+}
+
+.founder-card.right-1 {
+  top: 15%;
+  right: 5%;
+  transform: rotate(5deg);
+}
+
+.founder-card.right-2 {
+  top: 55%;
+  right: 8%;
+  transform: rotate(-3deg);
+}
+
+.founder-card.active.left-1,
+.founder-card.active.left-2 {
+  transform: rotate(0deg) scale(1.05) translateZ(50px);
+}
+
+.founder-card.active.right-1,
+.founder-card.active.right-2 {
+  transform: rotate(0deg) scale(1.05) translateZ(50px);
+}
+
+.founder-image-container {
+  position: relative;
+  width: 100%;
+  height: 70%;
+  border-radius: 15px;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(255, 215, 0, 0.1), rgba(0, 0, 0, 0.3));
+  border: 2px solid rgba(255, 215, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.founder-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.4s ease;
+}
+
+.founder-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 215, 0, 0.1) 0%, 
+    rgba(0, 0, 0, 0.3) 50%, 
+    rgba(255, 215, 0, 0.05) 100%
+  );
+  transition: all 0.4s ease;
+}
+
+.founder-card.active .founder-overlay {
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 215, 0, 0.2) 0%, 
+    rgba(0, 0, 0, 0.1) 50%, 
+    rgba(255, 215, 0, 0.1) 100%
+  );
+}
+
+.founder-info {
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(15px);
+  border-radius: 0 0 15px 15px;
+  border-top: 1px solid rgba(255, 215, 0, 0.2);
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transform: translateY(100%);
+  transition: all 0.4s ease;
+}
+
+.founder-card.active .founder-info {
+  transform: translateY(0);
+}
+
+.founder-name {
+  color: #FFD700;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.founder-role {
+  color: rgba(248, 248, 255, 0.8);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0 0 10px 0;
+  opacity: 0.9;
+}
+
+.founder-description {
+  color: rgba(248, 248, 255, 0.7);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease 0.2s;
+}
+
+.founder-card.active .founder-description {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.particles-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle-bg {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: radial-gradient(circle, #FFD700, #FFA500);
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: floatUp infinite linear;
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-10vh) translateX(50px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.company-description {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 50;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.company-title {
+  color: #FFD700;
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.company-subtitle {
+  color: rgba(248, 248, 255, 0.8);
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin: 0 0 20px 0;
+  opacity: 0.9;
+}
+
+.description-text {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.description-text p {
+  color: rgba(248, 248, 255, 0.8);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .back-btn-about {
+    top: 20px;
+    left: 20px;
+    padding: 10px 16px;
+  }
+
+  .founder-card {
+    width: 220px;
+    height: 320px;
+  }
+
+  .founder-card.left-1 {
+    top: 10%;
+    left: 3%;
+  }
+
+  .founder-card.left-2 {
+    top: 65%;
+    left: 5%;
+  }
+
+  .founder-card.right-1 {
+    top: 8%;
+    right: 3%;
+  }
+
+  .founder-card.right-2 {
+    top: 60%;
+    right: 5%;
+  }
+
+  .main-logo {
+    width: 150px;
+  }
+
+  .company-title {
+    font-size: 2.5rem;
+  }
+
+  .company-description {
+    bottom: 20px;
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 768px) {
+  .founder-card {
+    width: 180px;
+    height: 260px;
+  }
+
+  .founder-card.left-1 {
+    top: 15%;
+    left: 2%;
+  }
+
+  .founder-card.left-2 {
+    top: 70%;
+    left: 3%;
+  }
+
+  .founder-card.right-1 {
+    top: 12%;
+    right: 2%;
+  }
+
+  .founder-card.right-2 {
+    top: 65%;
+    right: 3%;
+  }
+
+  .main-logo {
+    width: 120px;
+  }
+
+  .company-title {
+    font-size: 2rem;
+  }
+
+  .company-subtitle {
+    font-size: 1rem;
+  }
+
+  .founder-name {
+    font-size: 1rem;
+  }
+
+  .founder-role {
+    font-size: 0.8rem;
+  }
+
+  .founder-description {
+    font-size: 0.7rem;
+  }
+}

@@ -41,7 +41,7 @@ const Shree = () => {
       backgroundColor: 'black',
       minHeight: '100vh',
       padding: '2rem',
-      color: 'white'
+      color: '#a7a7a7b3'
     }}>
       <button
         onClick={goBack}
@@ -50,7 +50,7 @@ const Shree = () => {
           top: '20px',
           left: '20px',
           background: 'rgba(255, 255, 255, 0.2)',
-          color: 'white',
+          color: '#a7a7a7b3',
           border: '1px solid rgba(255, 255, 255, 0.3)',
           padding: '10px 20px',
           borderRadius: '25px',
@@ -63,7 +63,7 @@ const Shree = () => {
       </button>
 
       <div style={{ textAlign: 'center', paddingTop: '80px' }}>
-        <h1 style={{ fontSize: '5rem', color: 'white', marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: '5rem', color: '#a7a7a7b3', marginBottom: '2rem' }}>
           Shree - Poetry
         </h1>
 
