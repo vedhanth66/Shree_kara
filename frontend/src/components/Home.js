@@ -32,6 +32,10 @@ const Home = () => {
     const navType = navEntries.length > 0 ? navEntries[0].type : '';
     const hasVisitedInSession = sessionStorage.getItem('hasVisitedHomePage');
     const isFirstVisit = !sessionStorage.getItem('hasEverVisited');
+    const wasBackNavigation = sessionStorage.getItem('backNavigation') === 'true';
+    
+    // Clear back navigation flag immediately
+    sessionStorage.removeItem('backNavigation');
     
     // Clear any existing video playback state
     const currentVideoRef = videoRef.current;
@@ -40,10 +44,16 @@ const Home = () => {
     }
 
     // Play video ONLY on:
-    // 1. First ever visit to the site
-    // 2. Page reload (F5 or refresh button)
-    // 3. Direct URL entry/bookmark access
-    if (navType === 'reload' || isFirstVisit || navType === 'navigate') {
+    // 1. First ever visit to the site (navigate type + no previous visit)
+    // 2. Page reload (reload type)
+    // 3. Direct URL entry (navigate type + not from back button)
+    const shouldPlayVideo = (
+      (navType === 'reload') || 
+      (isFirstVisit && navType === 'navigate') ||
+      (navType === 'navigate' && !wasBackNavigation && !hasVisitedInSession)
+    );
+
+    if (shouldPlayVideo) {
       if (isFirstVisit) {
         sessionStorage.setItem('hasEverVisited', 'true');
       }
