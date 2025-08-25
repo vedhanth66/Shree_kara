@@ -63,15 +63,41 @@ const Shree = () => {
       </button>
 
       <div style={{ textAlign: 'center', paddingTop: '80px' }}>
-        <h1 style={{ fontSize: '5rem', color: '#a7a7a7b3', marginBottom: '2rem' }}>
-          Shree - Poetry
-        </h1>
+        {/* CENTERED HEADER */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          marginBottom: '2rem'
+        }}>
+          <h1 style={{ 
+            fontSize: '5rem', 
+            color: '#a7a7a7b3', 
+            marginBottom: '1rem',
+            textAlign: 'center'
+          }}>
+            Shree
+          </h1>
+          <p style={{
+            fontSize: '1.3rem',
+            color: 'rgba(160, 160, 160, 0.8)',
+            margin: '0 0 2rem',
+            fontWeight: 400,
+            textTransform: 'uppercase',
+            letterSpacing: '1px',
+            textAlign: 'center'
+          }}>
+            Poetry & Creative Expression
+          </p>
+        </div>
 
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           {/* Poems Section */}
           {poems.length > 0 && (
             <div style={{ marginBottom: '4rem' }}>
-              <h2 style={{ fontSize: '2rem', color: '#FFD800', marginBottom: '2rem' }}>Handwritten Poems</h2>
+              <h2 style={{ fontSize: '2rem', color: '#FFD800', marginBottom: '2rem', textAlign: 'center' }}>Handwritten Poems</h2>
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
@@ -119,7 +145,7 @@ const Shree = () => {
           {/* Images Section */}
           {images.length > 0 && (
             <div style={{ marginBottom: '4rem' }}>
-              <h2 style={{ fontSize: '2rem', color: '#FFD800', marginBottom: '2rem' }}>Art Gallery</h2>
+              <h2 style={{ fontSize: '2rem', color: '#FFD800', marginBottom: '2rem', textAlign: 'center' }}>Art Gallery</h2>
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
@@ -154,7 +180,7 @@ const Shree = () => {
           {/* Videos Section */}
           {videos.length > 0 && (
             <div style={{ marginBottom: '4rem' }}>
-              <h2 style={{ fontSize: '2rem', color: '#FFD800', marginBottom: '2rem' }}>Video Poetry</h2>
+              <h2 style={{ fontSize: '2rem', color: '#FFD800', marginBottom: '2rem', textAlign: 'center' }}>Video Poetry</h2>
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
@@ -189,7 +215,7 @@ const Shree = () => {
           {/* Music Section */}
           {music.length > 0 && (
             <div style={{ marginBottom: '4rem' }}>
-              <h2 style={{ fontSize: '2rem', color: '#FFD800', marginBottom: '2rem' }}>Musical Poetry</h2>
+              <h2 style={{ fontSize: '2rem', color: '#FFD800', marginBottom: '2rem', textAlign: 'center' }}>Musical Poetry</h2>
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',

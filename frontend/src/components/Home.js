@@ -27,11 +27,10 @@ const Home = () => {
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   useEffect(() => {
-    // --- Enhanced Logic to determine if video should play ---
+    // --- Enhanced Logic to determine if video should play (once per tab) ---
     const navEntries = performance.getEntriesByType('navigation');
     const navType = navEntries.length > 0 ? navEntries[0].type : '';
-    const hasVisitedInSession = sessionStorage.getItem('hasVisitedHomePage');
-    const isFirstVisit = !sessionStorage.getItem('hasEverVisited');
+    const hasPlayedInTab = sessionStorage.getItem('videoPlayedInTab');
     const wasBackNavigation = sessionStorage.getItem('backNavigation') === 'true';
     
     // Clear back navigation flag immediately
@@ -44,23 +43,21 @@ const Home = () => {
     }
 
     // Play video ONLY on:
-    // 1. First ever visit to the site (navigate type + no previous visit)
-    // 2. Page reload (reload type)
-    // 3. Direct URL entry (navigate type + not from back button)
+    // 1. First visit in this tab (no previous play flag)
+    // 2. Page reload (reload type) but only if not already played in tab
+    // 3. Not from back navigation
     const shouldPlayVideo = (
-      (navType === 'reload') || 
-      (isFirstVisit && navType === 'navigate') ||
-      (navType === 'navigate' && !wasBackNavigation && !hasVisitedInSession)
+      !hasPlayedInTab && 
+      !wasBackNavigation && 
+      (navType === 'navigate' || navType === 'reload')
     );
 
     if (shouldPlayVideo) {
-      if (isFirstVisit) {
-        sessionStorage.setItem('hasEverVisited', 'true');
-      }
-      sessionStorage.setItem('hasVisitedHomePage', 'true');
+      // Mark that video has been played in this tab
+      sessionStorage.setItem('videoPlayedInTab', 'true');
       setIsVideoEnded(false); // Play the video
     } else {
-      // Skip video for back/forward navigation and internal routing
+      // Skip video - already played in this tab or back navigation
       setIsVideoEnded(true); // Skip the video
     }
 

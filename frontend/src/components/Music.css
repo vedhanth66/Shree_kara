@@ -46,9 +46,14 @@
   margin: 0 auto;
 }
 
+/* Header Section - CENTERED */
 .header-section {
   text-align: center;
   margin-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .main-title {
@@ -63,6 +68,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-align: center;
 }
 
 .subtitle {
@@ -70,6 +76,7 @@
   color: #a7a7a7b3;
   margin: 0 0 2rem;
   font-weight: 400;
+  text-align: center;
 }
 
 /* Music Grid */
