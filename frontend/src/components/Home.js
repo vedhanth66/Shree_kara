@@ -27,16 +27,30 @@ const Home = () => {
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   useEffect(() => {
-    // --- Logic to determine if video should play ---
+    // --- Enhanced Logic to determine if video should play ---
     const navEntries = performance.getEntriesByType('navigation');
     const navType = navEntries.length > 0 ? navEntries[0].type : '';
     const hasVisitedInSession = sessionStorage.getItem('hasVisitedHomePage');
+    const isFirstVisit = !sessionStorage.getItem('hasEverVisited');
+    
+    // Clear any existing video playback state
+    const currentVideoRef = videoRef.current;
+    if (currentVideoRef) {
+      currentVideoRef.currentTime = 0;
+    }
 
-    // Play video on first visit in a session OR on reload.
-    if (navType === 'reload' || !hasVisitedInSession) {
+    // Play video ONLY on:
+    // 1. First ever visit to the site
+    // 2. Page reload (F5 or refresh button)
+    // 3. Direct URL entry/bookmark access
+    if (navType === 'reload' || isFirstVisit || navType === 'navigate') {
+      if (isFirstVisit) {
+        sessionStorage.setItem('hasEverVisited', 'true');
+      }
       sessionStorage.setItem('hasVisitedHomePage', 'true');
       setIsVideoEnded(false); // Play the video
     } else {
+      // Skip video for back/forward navigation and internal routing
       setIsVideoEnded(true); // Skip the video
     }
 
@@ -44,7 +58,6 @@ const Home = () => {
     document.querySelectorAll(".transition-image, .transition-overlay").forEach(el => el.remove());
 
     // Video end listener
-    const currentVideoRef = videoRef.current;
     if (currentVideoRef) {
       currentVideoRef.addEventListener('ended', handleVideoEnd);
     }

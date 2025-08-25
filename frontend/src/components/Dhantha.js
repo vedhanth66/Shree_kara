@@ -47,10 +47,8 @@ const Dhantha = () => {
     setActiveCategory(section);
     
     const refs = {
-      poems: poemsRef,
       images: imagesRef,
-      videos: videosRef,
-      music: musicRef
+      videos: videosRef
     };
     
     if (refs[section] && refs[section].current) {
@@ -62,10 +60,8 @@ const Dhantha = () => {
   };
 
   const categories = [
-    { id: 'poems', label: 'Poems', count: poems.length, icon: '✍️' },
     { id: 'images', label: 'Images', count: images.length, icon: '🎨' },
-    { id: 'videos', label: 'Videos', count: videos.length, icon: '🎭' },
-    { id: 'music', label: 'Music', count: music.length, icon: '🎵' }
+    { id: 'videos', label: 'Videos', count: videos.length, icon: '🎭' }
   ];
 
   return (
@@ -107,32 +103,6 @@ const Dhantha = () => {
 
         {/* Content Sections */}
         <div className="content-grid">
-          {/* Poems Section */}
-          {poems.length > 0 && (
-            <div ref={poemsRef} className="content-section" id="poems">
-              <h2 className="section-title">
-                <span className="section-icon">✍️</span>
-                Creative Poetry
-              </h2>
-              <div className="items-grid">
-                {poems.map((poem) => (
-                  <div key={poem._id} className="content-card poem-card">
-                    <div className="card-header">
-                      <h3 className="item-title">{poem.title}</h3>
-                      <p className="poem-author">by {poem.author}</p>
-                    </div>
-                    <div className="poem-content">{poem.content}</div>
-                    <div className="card-footer">
-                      <span className="upload-info">
-                        {poem.uploaded_by} • {new Date(poem.uploaded_at).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Images Section */}
           {images.length > 0 && (
             <div ref={imagesRef} className="content-section" id="images">
@@ -203,47 +173,8 @@ const Dhantha = () => {
             </div>
           )}
 
-          {/* Music Section */}
-          {music.length > 0 && (
-            <div ref={musicRef} className="content-section" id="music">
-              <h2 className="section-title">
-                <span className="section-icon">🎵</span>
-                Creative Music
-              </h2>
-              <div className="items-grid">
-                {music.map((track) => (
-                  <div key={track._id} className="content-card music-card">
-                    <div className="music-header">
-                      <h3 className="item-title">{track.title}</h3>
-                      {track.artist && (
-                        <p className="track-artist">by {track.artist}</p>
-                      )}
-                    </div>
-                    <div className="music-player">
-                      <audio 
-                        controls 
-                        className="content-audio"
-                        src={`data:audio/mpeg;base64,${track.music_data}`} 
-                      />
-                    </div>
-                    <div className="card-content">
-                      {track.description && (
-                        <p className="item-description">{track.description}</p>
-                      )}
-                      <div className="card-footer">
-                        <span className="upload-info">
-                          {track.uploaded_by} • {new Date(track.uploaded_at).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Empty State */}
-          {images.length === 0 && videos.length === 0 && poems.length === 0 && music.length === 0 && (
+          {images.length === 0 && videos.length === 0 && (
             <div className="empty-state">
               <div className="empty-icon">🎭</div>
               <h3>No Content Yet</h3>

@@ -27,7 +27,7 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 215, 0, 0.3);
   border-radius: 25px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(160, 160, 160, 0.9);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -60,7 +60,7 @@
 }
 
 .author-title p {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(160, 160, 160, 0.8);
   margin: 0.5rem 0 0;
   font-size: 1rem;
 }
@@ -154,7 +154,7 @@
 
 .stat-info p {
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(160, 160, 160, 0.8);
   margin: 0.5rem 0 0;
   font-weight: 500;
 }
@@ -205,25 +205,44 @@
 
 .form-group label {
   display: block;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 14px;
+  color: rgba(160, 160, 160, 0.9);
   font-weight: 500;
   margin-bottom: 0.5rem;
 }
 
 .form-input,
-.select-input,
 .form-textarea {
   width: 100%;
   padding: 14px 18px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  color: white;
+  color: rgba(160, 160, 160, 0.9);
   font-size: 14px;
   transition: all 0.3s ease;
   box-sizing: border-box;
   font-family: inherit;
+  backdrop-filter: blur(10px);
+}
+
+.select-input {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: rgba(160, 160, 160, 0.9);
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  font-family: inherit;
+  backdrop-filter: blur(10px);
+}
+
+.select-input option {
+  background: rgba(0, 0, 0, 0.9);
+  color: rgba(160, 160, 160, 0.9);
+  padding: 10px;
 }
 
 .form-input,
@@ -244,7 +263,7 @@
   backdrop-filter: blur(10px);
   border: 2px dashed rgba(255, 215, 0, 0.3);
   border-radius: 12px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(160, 160, 160, 0.9);
   font-size: 14px;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -405,7 +424,7 @@
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.05);
   margin-bottom: 0.5rem;
-  color: #fff;
+  color: rgba(160, 160, 160, 0.9);
 }
 
 .content-info {
@@ -418,7 +437,7 @@
 .content-title {
   font-size: 1rem;
   font-weight: 500;
-  color: #fff;
+  color: rgba(160, 160, 160, 0.9);
 }
 
 .content-target {

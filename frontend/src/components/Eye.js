@@ -43,7 +43,6 @@ const Eye = () => {
     setActiveCategory(section);
     
     const refs = {
-      poems: poemsRef,
       images: imagesRef,
       videos: videosRef
     };
@@ -57,7 +56,6 @@ const Eye = () => {
   };
 
   const categories = [
-    { id: 'poems', label: 'Poems', count: poems.length, icon: '📝' },
     { id: 'images', label: 'Images', count: images.length, icon: '📸' },
     { id: 'videos', label: 'Videos', count: videos.length, icon: '🎬' }
   ];
@@ -101,32 +99,6 @@ const Eye = () => {
 
         {/* Content Sections */}
         <div className="content-grid">
-          {/* Poems Section */}
-          {poems.length > 0 && (
-            <div ref={poemsRef} className="content-section" id="poems">
-              <h2 className="section-title">
-                <span className="section-icon">📝</span>
-                Cinematic Poetry
-              </h2>
-              <div className="items-grid">
-                {poems.map((poem) => (
-                  <div key={poem._id} className="content-card poem-card">
-                    <div className="card-header">
-                      <h3 className="item-title">{poem.title}</h3>
-                      <p className="poem-author">by {poem.author}</p>
-                    </div>
-                    <div className="poem-content">{poem.content}</div>
-                    <div className="card-footer">
-                      <span className="upload-info">
-                        {poem.uploaded_by} • {new Date(poem.uploaded_at).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Images Section */}
           {images.length > 0 && (
             <div ref={imagesRef} className="content-section" id="images">
@@ -198,7 +170,7 @@ const Eye = () => {
           )}
 
           {/* Empty State */}
-          {images.length === 0 && videos.length === 0 && poems.length === 0 && (
+          {images.length === 0 && videos.length === 0 && (
             <div className="empty-state">
               <div className="empty-icon">🎬</div>
               <h3>No Content Yet</h3>
